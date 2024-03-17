@@ -1,0 +1,102 @@
+{% extends 'core.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Header -->
+    <header id="id_header">
+        <a id="id_logo" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="Web_pt">
+        </a>
+        <nav id="id_navbar">
+            <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+            <a class="nav-link" href="{% url 'schedule' %}">Agenda</a>
+            <hr class="separator">
+            <a class="nav-link" id="id_btn_logout" onclick="document.getElementById('id_form_logout').submit()">Cerrar Sesión</a>
+            <form id="id_form_logout" action="{% url 'logout' %}" method="post" style="display: none;">{% csrf_token %}</form>
+        </nav>
+    </header>
+    <!-- Content -->
+    <div class="generic-page-1" id="id_customers_page">
+        <div id="id_customers_page_header">
+            <h1>Clientes</h1>
+            <button class="btn" id="id_btn_add_customer_options">Añadir +</button>
+            <div class="options-menu" id="id_add_customer_options" style="display: none;">
+                <div class="add-customer-option" id="id_add_customer_option" onclick="get_form(`{% url 'add-customer' %}`, 'id_add_customer_form')">
+                    <svg width="1rem" height="1rem" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M45.3334 56V50.6667C45.3334 47.8377 44.2096 45.1246 42.2092 43.1242C40.2088 41.1238 37.4957 40 34.6667 40H13.3334C10.5044 40 7.79133 41.1238 5.79094 43.1242C3.79055 45.1246 2.66675 47.8377 2.66675 50.6667V56" stroke="black" stroke-width="5.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M24.0002 29.3333C29.8912 29.3333 34.6668 24.5577 34.6668 18.6667C34.6668 12.7756 29.8912 8 24.0002 8C18.1091 8 13.3335 12.7756 13.3335 18.6667C13.3335 24.5577 18.1091 29.3333 24.0002 29.3333Z" stroke="black" stroke-width="5.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M45.3335 29.3334H61.3335" stroke="black" stroke-width="5.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M53.3335 21.3334V37.3334" stroke="black" stroke-width="5.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <p>Añadir Cliente</p>
+                </div>
+                <div class="add-customer-option" onclick="$('#id_import_file').click()">
+                    <svg width="1rem" height="1rem" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M24.781 3.44767C25.2811 2.94759 25.9594 2.66663 26.6667 2.66663H48C52.4184 2.66663 56 6.24836 56 10.6666V24C56 25.4727 54.8061 26.6666 53.3333 26.6666C51.8605 26.6666 50.6667 25.4727 50.6667 24V10.6666C50.6667 9.19388 49.4728 7.99996 48 7.99996H29.3333V21.3333C29.3333 22.806 28.1395 24 26.6667 24H13.3333V53.3333C13.3333 54.8061 14.5273 56 16 56H18.6667C20.1394 56 21.3333 57.1938 21.3333 58.6666C21.3333 60.1394 20.1394 61.3333 18.6667 61.3333H16C11.5817 61.3333 8 57.7517 8 53.3333V21.3333C8 20.626 8.28096 19.9478 8.78104 19.4477L24.781 3.44767ZM17.1046 18.6666H24V11.7712L17.1046 18.6666ZM50.6667 32C52.1395 32 53.3333 33.1938 53.3333 34.6666V50.6666H61.3333C62.8061 50.6666 64 51.8605 64 53.3333C64 54.8061 62.8061 56 61.3333 56H50.6667C49.1939 56 48 54.8061 48 53.3333V34.6666C48 33.1938 49.1939 32 50.6667 32ZM31.5032 33.1168C30.6472 31.9181 28.9819 31.6408 27.7835 32.4968C26.5849 33.3528 26.3074 35.0181 27.1635 36.2165L32.7229 44L27.1635 51.7834C26.3074 52.9818 26.5849 54.6472 27.7835 55.5032C28.9819 56.3592 30.6472 56.0818 31.5032 54.8832L36 48.588L40.4968 54.8832C41.3528 56.0818 43.0181 56.3592 44.2165 55.5032C45.4152 54.6472 45.6925 52.9818 44.8365 51.7834L39.2771 44L44.8365 36.2165C45.6925 35.0181 45.4152 33.3528 44.2165 32.4968C43.0181 31.6408 41.3528 31.9181 40.4968 33.1168L36 39.412L31.5032 33.1168Z" fill="black"/>
+                    </svg>
+                    <p>Importar .xlsx</p>
+                </div>
+            </div>
+            <form action="{% url 'import-xlsx' %}" method="post" enctype="multipart/form-data" id="select-excel-file" style="display: none;">
+                {% csrf_token %}
+                <input type="file" name="excel_file" id="id_import_file" onchange="this.form.submit()" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+            </form>
+        </div>
+        <div id="id_customer_filters">
+            <input class="filter-input colspan-2" type="text"  placeholder="Buscar..." id="id_search_text" onkeyup="get_customer_list()">
+            <div class="filter-input-w-label">
+                <label for="id_installation_status" class="label">Status</label>
+                <select class="filter-input" id="id_installation_status" onchange="get_customer_list()">
+                    <option value="nd">---- ----</option>
+                    <option value="or-to-assign">Por asignar</option>
+                    <option value="or-assigned">Asignada</option>
+                    <option value="or-completed">Finalizada</option>
+                </select>
+            </div>
+            <div id="id_assigned_date" class="colspan-2">
+                <div class="filter-input-w-label">
+                    <label for="id_from_date" class="label">Desde</label>
+                    <input class="filter-input" onchange="get_customer_list()" type="date" id="id_from_date" disabled>
+                </div>
+                <div class="filter-input-w-label">
+                    <label for="id_to_date" class="label">Hasta</label>
+                    <input class="filter-input" onchange="get_customer_list()" type="date" id="id_to_date" disabled>
+                </div>
+            </div>
+            <div class="filter-input-w-label">
+                <label for="id_technician" class="label">Técnico</label>
+                <select class="filter-input" id="id_technician" name="id_technician" onchange="get_customer_list()" disabled>
+                    <option value="--">---- ----</option>
+                    {% for technician in technicians %}
+                    <option value="{{ technician.pk }}">{{ technician.user.get_full_name }}</option>  
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-input-w-label">
+                <label for="id_order_by_input" class="label">Ordenar</label>
+                <select class="filter-input" id="id_order_by_input" onchange="get_customer_list()"> 
+                    <option value="date_received">Fecha de recepción</option>
+                    <option value="-pk" >Nro. De Contrato</option>
+                </select>
+            </div>
+            <button id="id_btn_export_customers" class="btn" onclick="export_xlsx();">Exportar</button>
+            <div id="id_get_xlsx" style="display: none;"></div>
+        </div>
+        <div id="id_customer_list"></div>
+
+    </div>
+    <!-- Forms -->
+    <div class="div-fullpage generic-form-1" id="id_add_customer_form" style="display: none;"></div>
+
+    <div class="div-fullpage generic-form-1" id="id_update_customer_form" style="display: none;"></div>
+
+    <div class="div-fullpage generic-form-1" id="id_assign_installation_form" style="display: none;"></div>
+
+    <div class="div-fullpage generic-form-1" id="id_delete_customer" style="display: none;"></div>
+
+    <!-- Footer -->
+    <footer id="id_footer">
+        <p>Piccioli Telco</p>
+    </footer>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% load order_app_extras %}
+
+{% for customer in customer_list %}
+<div class="customer">
+    <form class="assign-button" method="post" action="{% url 'update-assign-order' customer.order.pk %}" onclick="event.preventDefault();this.querySelector('.input-hidden-technician').setAttribute('value', $('#id_technician').val());this.querySelector('.input-hidden-date-assigned').setAttribute('value', $('#id_date').val());assign_order(this)">
+        {% csrf_token %}
+        <p>Asignar +</p>
+        <input type="hidden" name="technician" class="input-hidden-technician">
+        <input type="hidden" name="date_assigned" class="input-hidden-date-assigned">
+    </form>
+    <div class="customer-info">
+        <div class="customer-info-header">
+            <p class="contract-number">C{{ customer.pk }}</p>
+        </div>
+        <p class="customer-name">{{ customer.customer_name }}</p>
+        <p class="address">{{ customer.address }}</p>
+        <p class="phone-number">{{ customer.phone_1 }} / {{ customer.phone_2|is_none }}</p>
+        <p class="customer-extra-info">{{ customer.get_category_display }} | {{ customer.comment|is_none }}</p>
+    </div>
+</div>   
+{% endfor %}
+    

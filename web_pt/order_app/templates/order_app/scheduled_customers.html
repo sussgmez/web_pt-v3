@@ -1,0 +1,50 @@
+{% load order_app_extras %}
+
+{% for customer in customer_list %}
+<div class="customer">
+    <form class="assign-info" method="post" action="{% url 'update-h-s-order' customer.order.pk %}" onsubmit="event.preventDefault();submit_scheduled_customer(this)">
+        {% csrf_token %}
+        <input type="time" name="time_assigned" class="input-assign input-assign-date" placeholder=" " id="id_time_assigned" value="{{customer.order.time_assigned|date:'H:i'}}">
+        <select name="customer_confirmation" id="id_customer_confirmation" class="input-assign input-assign-confirm" onchange="this.dataset.chosen = this.value" data-chosen="{{ customer.order.customer_confirmation }}">
+            <option value="0" {% if customer.order.customer_confirmation == 0 %} selected {% endif %}>No citado</option>
+            <option value="1" {% if customer.order.customer_confirmation == 1 %} selected {% endif %}>Pendiente</option>
+            <option value="2" {% if customer.order.customer_confirmation == 2 %} selected {% endif %}>Confirmado</option>
+        </select>
+        
+    </form>
+    <div class="customer-info">
+        <div class="customer-info-header">
+            <p class="contract-number">C{{ customer.pk }}</p>
+            <svg width="1.5rem" height="1.5rem" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="show_customer_menu(event, this)">
+            <path d="M24 19.5C24.89 19.5 25.76 19.7639 26.5001 20.2584C27.2401 20.7529 27.8169 21.4557 28.1575 22.2779C28.4981 23.1002 28.5872 24.005 28.4135 24.8779C28.2399 25.7508 27.8113 26.5526 27.182 27.182C26.5526 27.8113 25.7508 28.2399 24.8779 28.4135C24.005 28.5872 23.1002 28.4981 22.2779 28.1575C21.4557 27.8169 20.7529 27.2401 20.2584 26.5001C19.7639 25.76 19.5 24.89 19.5 24C19.5 22.8065 19.9741 21.6619 20.818 20.818C21.6619 19.9741 22.8065 19.5 24 19.5ZM1.5 24C1.5 24.89 1.76392 25.76 2.25839 26.5001C2.75285 27.2401 3.45566 27.8169 4.27792 28.1575C5.10019 28.4981 6.00499 28.5872 6.87791 28.4135C7.75082 28.2399 8.55264 27.8113 9.18198 27.182C9.81132 26.5526 10.2399 25.7508 10.4135 24.8779C10.5872 24.005 10.4981 23.1002 10.1575 22.2779C9.81686 21.4557 9.24009 20.7529 8.50007 20.2584C7.76005 19.7639 6.89002 19.5 6 19.5C4.80653 19.5 3.66193 19.9741 2.81802 20.818C1.97411 21.6619 1.5 22.8065 1.5 24ZM37.5 24C37.5 24.89 37.7639 25.76 38.2584 26.5001C38.7529 27.2401 39.4557 27.8169 40.2779 28.1575C41.1002 28.4981 42.005 28.5872 42.8779 28.4135C43.7508 28.2399 44.5526 27.8113 45.182 27.182C45.8113 26.5526 46.2399 25.7508 46.4135 24.8779C46.5872 24.005 46.4981 23.1002 46.1575 22.2779C45.8169 21.4557 45.2401 20.7529 44.5001 20.2584C43.76 19.7639 42.89 19.5 42 19.5C40.8065 19.5 39.6619 19.9741 38.818 20.818C37.9741 21.6619 37.5 22.8065 37.5 24Z" fill="black"/>
+            </svg>
+        </div>
+        <p class="customer-name">{{ customer.customer_name }}</p>
+        <p class="address">{{ customer.address }}</p>
+        <p class="phone-number">{{ customer.phone_1 }} / {{ customer.phone_2|is_none }}</p>
+        <p class="customer-extra-info">{{ customer.get_category_display }} | {{ customer.comment|is_none }}</p>
+        <div class="options-menu customer-menu" style="display: none;">
+            <div class="customer-menu-option" onclick="get_form(`{% url 'update-order' customer.order.pk %}`, 'id_assign_installation_form')">
+                <svg width="1rem" height="1rem" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M57.6 40.4C55.4 40.8 53.6 40.4 52.8 39C52 37.6 52.6 35.6 54 34C52.2 32.2 50.2 31 47.8 30.4C47.2 32.4 45.8 34 44.2 34C42.6 34 41.2 32.6 40.6 30.4C38.2 31 36 32.2 34.4 34C35.8 35.6 36.4 37.6 35.6 39C34.8 40.4 32.8 40.8 30.8 40.4C30.2 41.6 30 42.8 30 44C30 45.2 30.2 46.4 30.4 47.6C32.6 47.2 34.4 47.6 35.2 49C36 50.4 35.4 52.4 34 54C35.8 55.8 37.8 57 40.2 57.6C40.8 55.6 42.2 54 43.8 54C45.4 54 46.8 55.4 47.4 57.6C49.8 57 52 55.8 53.6 54C52.2 52.4 51.6 50.4 52.4 49C53.2 47.6 55.2 47.2 57.2 47.6C57.6 46.4 57.6 45.2 57.6 44C57.6 42.8 57.8 41.6 57.6 40.4Z" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linejoin="round"/>
+                <path d="M44 48C46.2091 48 48 46.2091 48 44C48 41.7909 46.2091 40 44 40C41.7909 40 40 41.7909 40 44C40 46.2091 41.7909 48 44 48Z" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linejoin="round"/>
+                <path d="M10 24H42" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21.0001 16.2L18.6001 7.8C23.2001 5.4 28.8001 5.4 33.4001 7.8L31.0001 16.2" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M33 9.80005C37 12.2 39.6 16.6 39.6 21.6V24" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12.3999 24V21.6C12.3999 16.6 14.9999 12.2 18.9999 9.80005" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M16 24V28C16 32.2 17.8 36 21 38C21 42.2 18.4 45.8 14.6 46.8C10.2 48 7 52 6 56.8C6 57.4 6.4 58 7 58H26" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p>Instalación</p>
+            </div>
+            <form class="customer-menu-option customer-menu-option-danger-color" method="post" action="{% url 'update-assign-order' customer.order.pk %}" onclick="assign_order(this)">
+                {% csrf_token %}
+                <input type="hidden" name="technician" class="input-hidden-technician">
+                <input type="hidden" name="date_assigned" class="input-hidden-date-assigned">
+                <svg width="1rem" height="1rem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#e24b4b"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#e24b4b" fill-rule="evenodd" d="M5.781 4.414a7 7 0 019.62 10.039l-9.62-10.04zm-1.408 1.42a7 7 0 009.549 9.964L4.373 5.836zM10 1a9 9 0 100 18 9 9 0 000-18z"></path> </g></svg>
+                <p>Quitar</p>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+    

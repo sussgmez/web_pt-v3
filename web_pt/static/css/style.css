@@ -1,0 +1,1405 @@
+* {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  background-color: #fff;
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+a {
+  color: #000;
+  text-decoration: none;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  appearance: textfield;
+}
+
+.separator {
+  border: none;
+}
+
+.colspan-2 {
+  grid-column: span 2;
+}
+
+.colspan-3 {
+  grid-column: span 3;
+}
+
+.btn {
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 400;
+  background-color: #1474fb;
+  color: #fff;
+  transition: all 0.1s;
+}
+
+.btn-alt {
+  background-color: #031630;
+}
+.btn-alt:hover {
+  background-color: rgba(3, 22, 48, 0.8) !important;
+}
+
+.btn-success {
+  background-color: #14a16d;
+}
+
+.btn-cancel {
+  background-color: #e24b4b;
+}
+
+.options-menu {
+  z-index: 100;
+}
+
+#id_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.75rem;
+  gap: 0.75rem;
+}
+#id_header #id_logo {
+  padding: 0.35rem;
+  border-radius: 50%;
+  transition: all 0.15s;
+}
+#id_header #id_logo img {
+  width: 2.25rem;
+}
+#id_header #id_logo:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_header #id_navbar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+#id_header #id_navbar .nav-link {
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+  padding: 0.65rem 1rem;
+}
+#id_header #id_navbar .nav-link:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+  color: #000;
+}
+#id_header #id_navbar .separator {
+  height: 1.75rem;
+  border-right: 1px solid rgba(0, 0, 0, 0.4);
+  margin: 0 1rem;
+}
+#id_header #id_navbar #id_btn_logout:hover {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+@media (max-width: 555px) {
+  #id_header {
+    flex-direction: column;
+  }
+  #id_header #id_navbar {
+    flex-direction: column;
+    width: 100%;
+  }
+  #id_header #id_navbar .nav-link {
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  #id_header #id_navbar .nav-link:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    padding: 0.65rem;
+  }
+  #id_header #id_navbar .separator {
+    height: 1px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+    margin: 0.5rem 0;
+  }
+  #id_header #id_navbar #id_btn_logout {
+    background-color: rgba(226, 75, 75, 0.9);
+    color: #fff;
+  }
+  #id_header #id_navbar #id_btn_logout:hover {
+    background-color: rgba(226, 75, 75, 0.8) !important;
+  }
+}
+
+.generic-page-1 {
+  padding: 2rem 0.5rem;
+  min-height: 100vh;
+}
+.generic-page-1 > div {
+  max-width: 846px;
+  margin: auto;
+  margin-bottom: 1rem;
+}
+
+.page-login {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 0.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.02);
+}
+.page-login #id_form_login {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  width: 25rem;
+  margin: auto;
+  padding: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0px 0px 0.5rem rgba(0, 0, 0, 0.08);
+}
+.page-login #id_form_login .header-form {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+.page-login #id_form_login .header-form img {
+  height: 2.25rem;
+}
+.page-login #id_form_login .header-form .separator {
+  height: 2rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.4);
+  margin: 0 1rem;
+}
+.page-login #id_form_login .header-form h1 {
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.page-login #id_form_login .login-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+.page-login #id_form_login .login-inputs .input-w-icon {
+  border: 1px solid rgba(0, 0, 0, 0.075);
+  display: flex;
+  align-items: center;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  transition: all 0.1s;
+}
+.page-login #id_form_login .login-inputs .input-w-icon .input-login {
+  border: none;
+  padding: 0.85rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  width: 100%;
+  outline: none;
+}
+.page-login #id_form_login .login-inputs .input-w-icon .input-login:placeholder-shown {
+  font-weight: 400;
+}
+.page-login #id_form_login .login-inputs .input-w-icon .icon {
+  margin: 0 0.5rem;
+}
+.page-login #id_form_login .login-inputs .input-w-icon:has(.input-login:focus) {
+  border: 1px solid rgba(0, 0, 0, 0.6);
+}
+.page-login #id_form_login .text-error {
+  margin-top: 0.75rem;
+  background-color: rgba(226, 75, 75, 0.06);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.8rem;
+  color: rgba(226, 75, 75, 0.8);
+  text-align: start;
+}
+.page-login #id_form_login .btn {
+  margin-top: 0.75rem;
+  font-weight: 600;
+  width: 100%;
+  padding: 0.75rem;
+}
+.page-login #id_form_login .btn:hover {
+  background-color: rgba(20, 116, 251, 0.8);
+}
+@media (max-width: 380px) {
+  .page-login #id_form_login {
+    padding: 2rem 1.5rem;
+  }
+}
+
+#id_customers_page #id_customers_page_header {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+#id_customers_page #id_customers_page_header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+#id_customers_page #id_customers_page_header #id_btn_add_customer_options {
+  padding: 0.5rem 2rem;
+}
+#id_customers_page #id_customers_page_header #id_btn_add_customer_options:hover {
+  background-color: rgba(20, 116, 251, 0.8);
+}
+#id_customers_page #id_customers_page_header #id_add_customer_options {
+  position: absolute;
+  right: 0;
+  top: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  box-shadow: -4px 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+#id_customers_page #id_customers_page_header #id_add_customer_options .add-customer-option {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+#id_customers_page #id_customers_page_header #id_add_customer_options .add-customer-option:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+@media (max-width: 380px) {
+  #id_customers_page #id_customers_page_header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  #id_customers_page #id_customers_page_header .add-customer-option {
+    padding: 0.8rem 1rem !important;
+  }
+  #id_customers_page #id_customers_page_header #id_btn_add_customer_options {
+    padding: 0.65rem;
+    font-weight: 600;
+  }
+  #id_customers_page #id_customers_page_header #id_add_customer_options {
+    width: 100%;
+    top: 5.25rem;
+  }
+}
+#id_customers_page #id_customer_filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+#id_customers_page #id_customer_filters .filter-input {
+  cursor: pointer;
+  height: 2rem;
+  appearance: none;
+  padding: 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #fff;
+  transition: all 0.1s;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+#id_customers_page #id_customer_filters .filter-input:focus {
+  outline: none;
+}
+#id_customers_page #id_customer_filters .filter-input-w-label {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 2rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+  border-radius: 2px;
+}
+#id_customers_page #id_customer_filters .filter-input-w-label .label {
+  font-weight: 600;
+  font-size: 0.7rem;
+  padding: 0.67rem;
+  width: 5.25rem;
+}
+#id_customers_page #id_customer_filters .filter-input-w-label .filter-input {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  box-shadow: unset;
+}
+#id_customers_page #id_customer_filters .filter-input-w-label .filter-input:focus {
+  outline: none;
+}
+#id_customers_page #id_customer_filters .filter-input-w-label:has(.filter-input:disabled) {
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: unset;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+#id_customers_page #id_customer_filters .filter-input-w-label:has(.filter-input:disabled) .label {
+  color: rgba(0, 0, 0, 0.6);
+}
+#id_customers_page #id_customer_filters .filter-input-w-label:has(.filter-input:disabled) .filter-input {
+  cursor: default;
+}
+#id_customers_page #id_customer_filters .separator {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+#id_customers_page #id_customer_filters #id_assign_filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+#id_customers_page #id_customer_filters #id_assigned_date {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+#id_customers_page #id_customer_filters #id_btn_export_customers {
+  background-color: #14a16d;
+  font-weight: 500;
+  padding: 0.5rem 2.5rem;
+  width: fit-content;
+  grid-column: -2;
+  margin-left: auto;
+}
+#id_customers_page #id_customer_filters #id_btn_export_customers:hover {
+  background-color: rgba(20, 161, 109, 0.6);
+}
+@media (max-width: 846px) {
+  #id_customers_page #id_customer_filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  #id_customers_page #id_customer_filters #id_search_text {
+    grid-column: auto;
+  }
+  #id_customers_page #id_customer_filters #id_assign_filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  #id_customers_page #id_customer_filters .colspan-3 {
+    grid-column: span 2;
+  }
+}
+@media (max-width: 555px) {
+  #id_customers_page #id_customer_filters {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  #id_customers_page #id_customer_filters .filter-input {
+    height: 2.35rem;
+  }
+  #id_customers_page #id_customer_filters .filter-input-w-label {
+    height: 2.35rem;
+  }
+  #id_customers_page #id_customer_filters #id_assigned_date {
+    grid-template-columns: 1fr;
+  }
+  #id_customers_page #id_customer_filters #id_assign_filters {
+    grid-template-columns: 1fr;
+  }
+  #id_customers_page #id_customer_filters #id_btn_export_customers {
+    width: 100%;
+    padding: 0.65rem;
+    font-weight: 600;
+  }
+  #id_customers_page #id_customer_filters .colspan-2 {
+    grid-column: auto;
+  }
+  #id_customers_page #id_customer_filters .colspan-3 {
+    grid-column: auto;
+  }
+}
+#id_customers_page #id_customer_list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  min-height: 24rem;
+}
+#id_customers_page #id_customer_list .customer {
+  position: relative;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+#id_customers_page #id_customer_list .customer p {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+#id_customers_page #id_customer_list .customer .customer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#id_customers_page #id_customer_list .customer .customer-header svg {
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+#id_customers_page #id_customer_list .customer .customer-header svg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_customers_page #id_customer_list .customer .customer-pk {
+  font-weight: 700;
+  font-size: 1rem;
+}
+#id_customers_page #id_customer_list .customer .separator {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+#id_customers_page #id_customer_list .customer .customer-info, #id_customers_page #id_customer_list .customer .assign-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+#id_customers_page #id_customer_list .customer .customer-info > div, #id_customers_page #id_customer_list .customer .assign-info > div {
+  overflow: hidden;
+}
+#id_customers_page #id_customer_list .customer .customer-address {
+  height: 2rem;
+  text-wrap: wrap;
+}
+#id_customers_page #id_customer_list .customer .customer-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+#id_customers_page #id_customer_list .customer .customer-field {
+  font-size: 0.85rem;
+}
+#id_customers_page #id_customer_list .customer .customer-status {
+  padding: 0.45rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  border-radius: 0.25rem;
+}
+#id_customers_page #id_customer_list .customer .to-assign-status {
+  color: #34aaff;
+  background-color: rgba(52, 170, 255, 0.1);
+}
+#id_customers_page #id_customer_list .customer .assigned-status {
+  color: #f3ad2b;
+  background-color: rgba(243, 173, 43, 0.1);
+}
+#id_customers_page #id_customer_list .customer .completed-status {
+  color: #14a16d;
+  background-color: rgba(20, 161, 109, 0.15);
+}
+#id_customers_page #id_customer_list .customer .cancelled-status {
+  color: #e24b4b;
+  background-color: rgba(226, 75, 75, 0.1);
+}
+#id_customers_page #id_customer_list .customer .customer-menu {
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+#id_customers_page #id_customer_list .customer .customer-menu .customer-menu-option {
+  cursor: pointer;
+  display: flex;
+  padding: 0.65rem 2.5rem 0.65rem 0.65rem;
+  gap: 0.75rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+#id_customers_page #id_customer_list .customer .customer-menu .customer-menu-option p {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+#id_customers_page #id_customer_list .customer .customer-menu .customer-menu-option:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_customers_page #id_customer_list .empty-customer-list {
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.02);
+  height: fit-content;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.8);
+}
+#id_customers_page #id_customer_list .btns-prev-next {
+  margin: auto;
+  margin-bottom: 0;
+  display: flex;
+  gap: 0.5rem;
+}
+#id_customers_page #id_customer_list .btns-prev-next .btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
+  padding: 0.25rem 0.5rem;
+}
+#id_customers_page #id_customer_list .btns-prev-next .btn:disabled {
+  cursor: default;
+  background-color: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.4);
+}
+#id_customers_page #id_customer_list .btns-prev-next .btn:disabled path {
+  fill: rgba(0, 0, 0, 0.4);
+}
+@media (max-width: 555px) {
+  #id_customers_page #id_customer_list {
+    grid-template-columns: 1fr;
+  }
+  #id_customers_page #id_customer_list .btns-prev-next {
+    grid-column: auto;
+  }
+}
+
+#id_schedule_page #id_schedule_page_header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+#id_schedule_page #id_technician_schedule {
+  margin-bottom: 2rem;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+  gap: 0.25rem;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors {
+  display: flex;
+  gap: 0.25rem;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors .selector-w-label {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 2.25rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+  border-radius: 2px;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors .selector-w-label .label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.67rem;
+  width: 5.25rem;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors .selector-w-label .selector {
+  cursor: pointer;
+  appearance: none;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.1s;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors .selector-w-label .selector:focus {
+  outline: none;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header #id_btn_save_schedule {
+  cursor: pointer;
+  height: 2.25rem;
+  background-color: #000;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.75rem;
+  border-radius: 2px;
+  border: none;
+  padding: 0.25rem 2rem;
+}
+#id_schedule_page #id_technician_schedule #id_technician_schedule_header #id_btn_save_schedule:disabled {
+  cursor: default;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#id_schedule_page #id_technician_schedule .customers {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  min-height: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+#id_schedule_page #id_technician_schedule .customer {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.08);
+  position: relative;
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-radius: 0.5rem;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign {
+  background-color: transparent;
+  cursor: pointer;
+  appearance: none;
+  width: fit-content;
+  margin: auto;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign:focus {
+  outline: none;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign-date::-webkit-calendar-picker-indicator {
+  display: none;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign-confirm {
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign-confirm[data-chosen="0"] {
+  color: #e24b4b;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign-confirm[data-chosen="1"] {
+  color: #f3ad2b;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign-confirm[data-chosen="2"] {
+  color: #14a16d;
+}
+#id_schedule_page #id_technician_schedule .customer .assign-info .input-assign-confirm option {
+  color: #000;
+  font-size: 0.8rem;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  padding: 0 0.5rem;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info p {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.8rem;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info .customer-info-header .contract-number {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info .customer-info-header svg {
+  top: 0.25rem;
+  right: 0.5rem;
+  position: absolute;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info .customer-info-header svg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info .customer-name {
+  font-weight: 600;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-info .address {
+  font-weight: 500;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-menu {
+  position: absolute;
+  top: 1.5rem;
+  right: 0.5rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-menu .customer-menu-option {
+  cursor: pointer;
+  display: flex;
+  padding: 0.65rem 2.5rem 0.65rem 0.65rem;
+  gap: 0.75rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+#id_schedule_page #id_technician_schedule .customer .customer-menu .customer-menu-option p {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+#id_schedule_page #id_technician_schedule .customer .customer-menu .customer-menu-option:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_schedule_page #id_technician_schedule .customer .customer-menu .customer-menu-option-danger-color {
+  color: #e24b4b;
+}
+@media (max-width: 555px) {
+  #id_schedule_page #id_technician_schedule #id_technician_schedule_header {
+    flex-direction: column;
+  }
+  #id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors {
+    flex-direction: column;
+  }
+  #id_schedule_page #id_technician_schedule #id_technician_schedule_header .schedule-selectors .selector-w-label {
+    height: 3rem;
+  }
+  #id_schedule_page #id_technician_schedule .customer {
+    grid-template-columns: 5rem 1fr;
+    gap: 0.25rem;
+  }
+  #id_schedule_page #id_technician_schedule .customer-info .address {
+    text-wrap: wrap !important;
+    height: 1.85rem;
+  }
+}
+#id_schedule_page #id_to_assign_customers_section h2 {
+  font-size: 1.25rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+#id_schedule_page #id_to_assign_customers_section .search-customer {
+  cursor: pointer;
+  height: 2.5rem;
+  appearance: none;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background-color: #fff;
+  transition: all 0.1s;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+  border-radius: 2px;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+#id_schedule_page #id_to_assign_customers_section .search-customer:focus {
+  outline: none;
+}
+#id_schedule_page #id_to_assign_customers_section .customers {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  min-height: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  height: 32rem;
+  overflow-y: scroll;
+  margin-bottom: 1.25rem;
+}
+#id_schedule_page #id_to_assign_customers_section .customers::-webkit-scrollbar {
+  width: 4px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+#id_schedule_page #id_to_assign_customers_section .customers::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+#id_schedule_page #id_to_assign_customers_section .customer {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 6rem 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-radius: 0.5rem;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .assign-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: transparent;
+  height: 100%;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 0.25rem;
+  transition: all 0.1s;
+  color: rgba(0, 0, 0, 0.8);
+}
+#id_schedule_page #id_to_assign_customers_section .customer .assign-button:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+  padding: 0 0.5rem;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-info p {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.8rem;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-info .customer-info-header .contract-number {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-info .customer-name {
+  font-weight: 600;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-info .address {
+  font-weight: 500;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-menu {
+  position: absolute;
+  top: 1.5rem;
+  right: 0.5rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-menu .customer-menu-option {
+  cursor: pointer;
+  display: flex;
+  padding: 0.65rem 2.5rem 0.65rem 0.65rem;
+  gap: 0.75rem;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-menu .customer-menu-option p {
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+#id_schedule_page #id_to_assign_customers_section .customer .customer-menu .customer-menu-option:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_schedule_page #id_to_assign_customers_section #id_preconfig_button {
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  font-weight: 500;
+}
+@media (max-width: 555px) {
+  #id_schedule_page #id_to_assign_customers_section .customer {
+    grid-template-columns: 5rem 1fr;
+    gap: 0.25rem;
+  }
+  #id_schedule_page #id_to_assign_customers_section .customer-info .address {
+    text-wrap: wrap !important;
+    height: 1.85rem;
+  }
+  #id_schedule_page #id_to_assign_customers_section #id_preconfig_button {
+    width: 100%;
+    padding: 0.75rem;
+    text-align: center;
+  }
+}
+
+#id_preconfig_page #id_preconfig_page_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#id_preconfig_page #id_preconfig_page_header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+#id_preconfig_page #id_preconfig_page_header .selector-w-label {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 2.25rem;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  transition: all 0.1s;
+  border-radius: 2px;
+}
+#id_preconfig_page #id_preconfig_page_header .selector-w-label .label {
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 0.67rem;
+  width: 5.25rem;
+}
+#id_preconfig_page #id_preconfig_page_header .selector-w-label .selector {
+  cursor: pointer;
+  appearance: none;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.1s;
+  width: 100%;
+  border: none;
+  background-color: transparent;
+}
+#id_preconfig_page #id_preconfig_page_header .selector-w-label .selector:focus {
+  outline: none;
+}
+@media (max-width: 555px) {
+  #id_preconfig_page #id_preconfig_page_header {
+    flex-direction: column;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  #id_preconfig_page #id_preconfig_page_header .selector-w-label {
+    width: 100%;
+    height: 3rem;
+  }
+}
+#id_preconfig_page .customers {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  min-height: 26rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#id_preconfig_page .customers .customer {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.08);
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+#id_preconfig_page .customers .customer .customer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+#id_preconfig_page .customers .customer .customer-info p {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+#id_preconfig_page .customers .customer .customer-info .contract-number {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+}
+#id_preconfig_page .customers .customer .customer-info .customer-info-header .contract-number {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+#id_preconfig_page .customers .customer .customer-info .customer-info-header svg {
+  top: 0.25rem;
+  right: 0.5rem;
+  position: absolute;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+#id_preconfig_page .customers .customer .customer-info .customer-info-header svg:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_preconfig_page .customers .customer .customer-info .customer-name {
+  font-weight: 600;
+}
+#id_preconfig_page .customers .customer .customer-info .address {
+  font-weight: 500;
+  max-height: 1.85rem;
+  text-wrap: wrap;
+  margin-bottom: 0.25rem;
+}
+#id_preconfig_page .customers .customer .preconfig-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-field {
+  position: relative;
+}
+#id_preconfig_page .customers .customer .preconfig-form .floating-label {
+  position: absolute;
+  left: 0.4rem;
+  top: 0.55rem;
+  background-color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  padding: 0 0.15rem;
+  transition: all 0.1s;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input {
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 0.5rem;
+  height: 2rem;
+  appearance: none;
+  font-size: 0.75rem;
+  font-weight: 600;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  resize: none;
+  width: 100%;
+  color: rgba(0, 0, 0, 0.8);
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input:-webkit-autofill, #id_preconfig_page .customers .customer .preconfig-form .form-input:-webkit-autofill:hover, #id_preconfig_page .customers .customer .preconfig-form .form-input:-webkit-autofill:focus, #id_preconfig_page .customers .customer .preconfig-form .form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input:disabled {
+  background-color: #fff;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input::-webkit-scrollbar {
+  width: 0;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input:focus {
+  outline: none;
+  border: 1px solid #34aaff;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input:focus ~ .floating-label {
+  color: #34aaff;
+}
+#id_preconfig_page .customers .customer .preconfig-form .form-input:focus ~ .floating-label, #id_preconfig_page .customers .customer .preconfig-form .form-input:not(:placeholder-shown) ~ .floating-label {
+  font-size: 0.65rem;
+  top: -0.4rem;
+  left: 0.25rem;
+}
+#id_preconfig_page .customers .customer .preconfig-form .connection-data {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.45rem;
+}
+@media (max-width: 846px) {
+  #id_preconfig_page .customers .customer {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+#id_footer {
+  height: 3rem;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#id_footer p {
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.div-fullpage {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+.generic-form-1 form {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+.generic-form-1 form .form-header {
+  position: relative;
+  padding: 1.5rem 1.25rem 1rem 1.75rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+.generic-form-1 form .form-header p {
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: rgba(0, 0, 0, 0.8);
+}
+.generic-form-1 form .form-header .btn-close-form {
+  right: 0.75rem;
+  top: 0.75rem;
+  position: absolute;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 2px;
+}
+.generic-form-1 form .form-header .btn-close-form svg {
+  transition: all 0.1s;
+  stroke: rgba(0, 0, 0, 0.2);
+}
+.generic-form-1 form .form-header .btn-close-form svg path {
+  fill: rgba(0, 0, 0, 0.2);
+}
+.generic-form-1 form .form-header .btn-close-form:hover svg {
+  stroke: rgba(0, 0, 0, 0.4);
+}
+.generic-form-1 form .form-header .btn-close-form:hover svg path {
+  fill: rgba(0, 0, 0, 0.4);
+}
+.generic-form-1 form .form-fields {
+  padding: 1rem 1.5rem;
+  display: grid;
+  gap: 0.75rem 0.6rem;
+  max-height: 82vh;
+  overflow-y: scroll;
+}
+.generic-form-1 form .form-fields .separator-w-p {
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin-top: 0.25rem;
+}
+.generic-form-1 form .form-fields .separator-w-p .separator {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+  position: absolute;
+}
+.generic-form-1 form .form-fields .separator-w-p p {
+  background-color: #fff;
+  z-index: 10;
+  padding: 0 0.35rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.25rem;
+  color: rgba(0, 0, 0, 0.8);
+}
+.generic-form-1 form .form-fields::-webkit-scrollbar {
+  width: 4px;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+.generic-form-1 form .form-fields::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.generic-form-1 form .form-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  grid-column: 1/-1;
+}
+.generic-form-1 form .form-btns .btn {
+  border-radius: 0.25rem;
+  font-weight: 500;
+  padding: 0.55rem 2rem;
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+.generic-form-1 form .form-btns .btn:hover {
+  background-color: rgba(20, 116, 251, 0.8);
+}
+.generic-form-1 form .form-btns .btn-success:hover {
+  background-color: rgba(20, 161, 109, 0.8);
+}
+.generic-form-1 form .form-btns .btn-cancel:hover {
+  background-color: rgba(226, 75, 75, 0.8);
+}
+.generic-form-1 form .form-field {
+  position: relative;
+}
+.generic-form-1 form .form-field .floating-label {
+  position: absolute;
+  left: 0.4rem;
+  top: 0.75rem;
+  background-color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  padding: 0 0.25rem;
+  transition: all 0.1s;
+}
+.generic-form-1 form .form-field .form-input {
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 0.5rem;
+  appearance: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: 2.35rem;
+  resize: none;
+  width: 100%;
+}
+.generic-form-1 form .form-field .form-input:-webkit-autofill, .generic-form-1 form .form-field .form-input:-webkit-autofill:hover, .generic-form-1 form .form-field .form-input:-webkit-autofill:focus, .generic-form-1 form .form-field .form-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+.generic-form-1 form .form-field .form-input:disabled {
+  background-color: #fff;
+}
+.generic-form-1 form .form-field .form-input::-webkit-scrollbar {
+  width: 0;
+}
+.generic-form-1 form .form-field .form-input:focus {
+  outline: none;
+  border: 1px solid #34aaff;
+}
+.generic-form-1 form .form-field .form-input:focus ~ .floating-label {
+  color: #34aaff;
+}
+.generic-form-1 form .form-field .form-input:focus ~ .floating-label, .generic-form-1 form .form-field .form-input:not(:placeholder-shown) ~ .floating-label {
+  font-size: 0.7rem;
+  top: -0.4rem;
+  left: 0.25rem;
+}
+.generic-form-1 form .form-input-textarea {
+  padding: 0.75rem 0.5rem !important;
+  height: auto !important;
+}
+@media (max-width: 380px) {
+  .generic-form-1 form .form-btns {
+    flex-direction: column;
+  }
+  .generic-form-1 form .form-btns .btn {
+    width: 100%;
+  }
+}
+
+#id_add_customer_form form, #id_update_customer_form form {
+  width: calc(846px - 1rem);
+}
+#id_add_customer_form form .form-fields, #id_update_customer_form form .form-fields {
+  grid-template-columns: repeat(3, 1fr);
+}
+#id_add_customer_form form .form-fields #id_check_contract_number, #id_update_customer_form form .form-fields #id_check_contract_number {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.55rem 3rem 0.55rem 1rem;
+  border-radius: 2px;
+  width: fit-content;
+}
+#id_add_customer_form form .form-fields .status-waiting, #id_update_customer_form form .form-fields .status-waiting {
+  background-color: rgba(243, 173, 43, 0.1);
+  color: rgba(243, 173, 43, 0.8);
+  border: 1px solid rgba(243, 173, 43, 0.2);
+}
+#id_add_customer_form form .form-fields .status-invalid, #id_update_customer_form form .form-fields .status-invalid {
+  background-color: rgba(226, 75, 75, 0.1);
+  color: rgba(226, 75, 75, 0.8);
+  border: 1px solid rgba(226, 75, 75, 0.2);
+}
+#id_add_customer_form form .form-fields .status-valid, #id_update_customer_form form .form-fields .status-valid {
+  background-color: rgba(20, 161, 109, 0.1);
+  color: rgba(20, 161, 109, 0.8);
+  border: 1px solid rgba(20, 161, 109, 0.2);
+}
+#id_add_customer_form form .form-field .form-input[type=date], #id_update_customer_form form .form-field .form-input[type=date] {
+  padding: 0.4rem 0.55rem;
+}
+#id_add_customer_form form #id_btn_submit_add_customer:disabled, #id_update_customer_form form #id_btn_submit_add_customer:disabled {
+  cursor: default;
+  background-color: rgba(20, 116, 251, 0.6);
+}
+@media (max-width: 555px) {
+  #id_add_customer_form form .form-fields, #id_update_customer_form form .form-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  #id_add_customer_form form .form-fields .colspan-3, #id_update_customer_form form .form-fields .colspan-3 {
+    grid-column: span 2;
+  }
+  #id_add_customer_form form .form-input, #id_update_customer_form form .form-input {
+    padding: 0.65rem !important;
+  }
+  #id_add_customer_form form #id_check_contract_number, #id_update_customer_form form #id_check_contract_number {
+    padding: 0.65rem !important;
+    width: 100% !important;
+  }
+}
+@media (max-width: 380px) {
+  #id_add_customer_form form .form-fields, #id_update_customer_form form .form-fields {
+    grid-template-columns: 1fr;
+  }
+  #id_add_customer_form form .form-fields .colspan-3, #id_update_customer_form form .form-fields .colspan-3 {
+    grid-column: span 1;
+  }
+  #id_add_customer_form form .form-fields .colspan-2, #id_update_customer_form form .form-fields .colspan-2 {
+    grid-column: span 1;
+  }
+}
+
+#id_assign_installation_form form {
+  width: 555px;
+}
+#id_assign_installation_form form .form-fields {
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.65rem;
+}
+#id_assign_installation_form form .form-field .form-input[type=datetime-local] {
+  padding: 0.4rem 0.55rem;
+}
+#id_assign_installation_form form .connection-data {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.25rem;
+}
+#id_assign_installation_form form .connection-data .floating-label {
+  left: 0.2rem;
+}
+
+#id_delete_customer form {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+}
+#id_delete_customer form .form-fields {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  padding: 2.5rem;
+  gap: 0;
+}
+#id_delete_customer form .form-fields h1 {
+  font-size: 1.05rem;
+  margin-bottom: 0.75rem;
+}
+#id_delete_customer form .form-fields p {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+#id_delete_customer form .form-fields .form-btns {
+  flex-direction: row !important;
+  margin-left: auto;
+}
+#id_delete_customer form .form-fields .form-btns .btn {
+  width: fit-content;
+}
+#id_delete_customer form .form-fields .form-btns .btn-alt {
+  font-weight: 600;
+  background-color: #fff;
+  color: rgba(0, 0, 0, 0.6);
+  box-shadow: unset;
+}
+#id_delete_customer form .form-fields .form-btns .btn-alt:hover {
+  background-color: #fff !important;
+}
+@media (max-width: 380px) {
+  #id_delete_customer form .form-fields {
+    padding: 1.5rem;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */

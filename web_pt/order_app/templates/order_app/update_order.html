@@ -1,0 +1,109 @@
+<form class="installation-form" method="post" action="{% url 'update-order' order.pk %}" onsubmit="event.preventDefault();save_customer(this);">
+    {% csrf_token %}
+    <div class="form-header">
+        <p>Instalación C{{form.instance.customer.pk}}</p>
+        <div class="btn-close-form" onclick="$('.div-fullpage').hide();">
+            <svg width="0.65rem" height="0.65rem" viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#e24b4b" stroke-width="2.4"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="#0F0F0F"></path> </g></svg>
+        </div>
+    </div>
+    <div class="form-fields">
+        <div class="separator-w-p colspan-2">
+            <p>Información de asignación</p>
+            <hr class="separator">
+        </div>
+        <div class="form-field colspan-2">
+            {{ form.technician }}
+            <span class="floating-label">Técnico</span>
+        </div>
+        <div class="form-field">
+            {{ form.date_assigned }}
+            <span class="floating-label">Fecha asignada</span>
+        </div>
+        <div class="form-field">
+            {{ form.time_assigned }}
+            <span class="floating-label">Hora asignada</span>
+        </div>
+        <div class="separator-w-p colspan-2">
+            <p>Información de conexión</p>
+            <hr class="separator">
+        </div>
+        <div class="form-field colspan-2">
+            {{ form.onu_serial }}
+            <span class="floating-label">Serial ONU</span>
+        </div>
+        <div class="form-field colspan-2">
+            {{ form.router_serial }}
+            <span class="floating-label">Serial Router</span>
+        </div>
+        <div class="connection-data colspan-2">
+            <div class="form-field">
+                {{ form.zone }}
+                <span class="floating-label">Zona</span>
+            </div>
+            <div class="form-field">
+                {{ form.olt }}
+                <span class="floating-label">OLT</span>
+            </div>
+            <div class="form-field">
+                {{ form.card }}
+                <span class="floating-label">Tarj.</span>
+            </div>
+            <div class="form-field">
+                {{ form.pon }}
+                <span class="floating-label">PON</span>
+            </div>
+            <div class="form-field">
+                {{ form.box }}
+                <span class="floating-label">Caja</span>
+            </div>
+            <div class="form-field">
+                {{ form.port }}
+                <span class="floating-label">Prto.</span>
+            </div>
+        </div>
+        <div class="form-field">
+            {{ form.box_power }}
+            <span class="floating-label">P. Caja</span>
+        </div>
+        <div class="form-field">
+            {{ form.house_power }}
+            <span class="floating-label">P. Roseta</span>
+        </div>
+        <div class="form-field">
+            {{ form.drop_serial }}
+            <span class="floating-label">Serial DROP</span>
+        </div>
+        <div class="form-field">
+            {{ form.drop_used }}
+            <span class="floating-label">Metro DROP</span>
+        </div>
+        <div class="form-field">
+            {{ form.hook_used }}
+            <span class="floating-label">Tensores</span>
+        </div>
+        <div class="form-field">
+            {{ form.fast_conn_used }}
+            <span class="floating-label">Conectores</span>
+        </div>
+
+        {{ form.completed }}
+
+        <div class="form-btns">
+            <button class="btn">Editar</button>
+            <button class="btn btn-alt" onclick="get_form(`{% url 'update-customer' form.instance.customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)}); $('#id_assign_installation_form').hide()">Ver Cliente</button>
+            
+            <button class="btn btn-alt" onclick="event.preventDefault()">Mensaje</button>
+            
+            {% if not form.instance.completed %}
+            <button class="btn btn-success" onclick="$('#id_completed').attr('value','True'); $('#id_assign_installation_form').hide()">Finalizar</button>
+            {% else %}
+            <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False'); $('#id_assign_installation_form').hide()">Cancelar</button>
+            {% endif %}            
+        </div>
+    </div>
+</form>
+
+<script>    
+    document.location = '{% url "home" %}'
+</script>
+
