@@ -59,7 +59,12 @@ class HSOrderForm(forms.ModelForm):
         }
 
 class OrderAssignUpdateForm(forms.ModelForm):
-    
     class Meta:
         model = Order
         fields = ("technician", "date_assigned")
+
+
+class OrderPreconfigUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['onu_serial', 'router_serial', 'zone', 'olt', 'card', 'pon', 'box']

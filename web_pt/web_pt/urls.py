@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from django.views.generic import RedirectView
-from order_app.views import HomeView, CustomerCreateView, CustomerListView, CustomerUpdateView, OrderUpdateView, CustomerDeleteView, Schedule, ScheduledCustomers, CustomersToAssign, OrderAssignUpdate, OrderHSUpdateView, import_xlsx, export_xlsx
+from order_app.views import HomeView, CustomerCreateView, CustomerListView, CustomerUpdateView, OrderUpdateView, CustomerDeleteView, Schedule, ScheduledCustomers, CustomersToAssign, OrderAssignUpdate, OrderHSUpdateView, Preconfig, PreconfigCustomers, OrderPreconfigUpdateView, import_xlsx, export_xlsx
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +23,9 @@ urlpatterns = [
     path('update_h_s_order/<int:pk>', login_required(OrderHSUpdateView.as_view()), name='update-h-s-order'),
     path('customers_to_assign/', login_required(CustomersToAssign.as_view()), name='customers-to-assign'),
     path('update_assign_order/<int:pk>', login_required(OrderAssignUpdate.as_view()), name='update-assign-order'),
+    # Preconfi
+    path('preconfig/', login_required(Preconfig.as_view()), name='preconfig'),
+    path('preconfig_customers/', login_required(PreconfigCustomers.as_view()), name='preconfig-customers'),
+    path('update_preconfig_order/<int:pk>', login_required(OrderPreconfigUpdateView.as_view()), name='update-preconfig-order'),
+    
 ]

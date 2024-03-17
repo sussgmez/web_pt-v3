@@ -37,7 +37,6 @@ async function submit_scheduled_customer(form) {
     })
 }
 
-
 async function save_customer(form) {
     await fetch(form.action, {
         method: form.method,
@@ -50,6 +49,9 @@ async function save_customer(form) {
         if (window.location.pathname == '/schedule/') { 
             get_schedule()
             get_customers_to_assign()
+        }
+        if (window.location.pathname == '/preconfig/') { 
+            get_preconfig_customers()
         }
     })
 }
@@ -116,6 +118,27 @@ async function get_customers_to_assign() {
         document.querySelector('#id_customers_to_assign').innerHTML = data
     })
 }
+
+async function get_preconfig_customers() {
+    filters = {
+        'date': $('#id_date').val(),
+    }
+    await fetch(`../preconfig_customers?date=${filters.date}`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_preconfig_customers').innerHTML = data
+    })
+}
+
+async function submit_preconfig_customer(form) {
+    await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form)
+    })
+}
+
 
 function check_contract_number(value) {
     if (parseInt(value) >= 1000000 && parseInt(value) <= 1099999) {
@@ -203,5 +226,9 @@ window.onload = () => {
     else if (window.location.pathname == '/schedule/')  {
         get_schedule() 
         get_customers_to_assign()
+    }
+    else if (window.location.pathname == '/preconfig/') {
+        get_preconfig_customers()
+        
     }
 }

@@ -1,0 +1,37 @@
+{% extends 'core.html' %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Header -->
+    <header id="id_header">
+        <a id="id_logo" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.png' %}" alt="Web_pt">
+        </a>
+        <nav id="id_navbar">
+            <a class="nav-link" href="{% url 'home' %}">Inicio</a>
+            <a class="nav-link" href="{% url 'schedule' %}">Agenda</a>
+            <hr class="separator">
+            <a class="nav-link" id="id_btn_logout" onclick="document.getElementById('id_form_logout').submit()">Cerrar Sesión</a>
+            <form id="id_form_logout" action="{% url 'logout' %}" method="post" style="display: none;">{% csrf_token %}</form>
+        </nav>
+    </header>
+    <!-- Content -->
+    <div class="generic-page-1" id="id_preconfig_page">
+        <div id="id_preconfig_page_header">
+            <h1>Preactivaciones</h1>
+            <div class="selector-w-label">
+                <label class="label">Fecha</label>
+                <input type="date" class="selector" id="id_date" value="{% now 'Y-m-d' %}" onchange="get_preconfig_customers()">
+            </div>
+        </div>
+        <div class="customers" id="id_preconfig_customers"></div>
+    </div>
+    <!-- Forms -->
+    <div class="div-fullpage generic-form-1" id="id_update_customer_form" style="display: none;"></div>
+    <div class="div-fullpage generic-form-1" id="id_assign_installation_form" style="display: none;"></div>
+    <!-- Footer -->
+    <footer id="id_footer">
+        <p>Piccioli Telco</p>
+    </footer>
+{% endblock content %}

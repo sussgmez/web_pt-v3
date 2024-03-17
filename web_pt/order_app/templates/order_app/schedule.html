@@ -44,85 +44,14 @@
         <div id="id_to_assign_customers_section">
             <h2>Instalaciones por asignar</h2>
             <input type="text" class="search-customer" id="id_search_text_to_assign" placeholder="Buscar..." onkeyup="get_customers_to_assign()">
-            <div class="customers" id="id_customers_to_assign">
-                <div class="customer">
-                    <button class="assign-button">Asignar +</button>
-                    <div class="customer-info">
-                        <div class="customer-info-header">
-                            <p class="contract-number">C1006565</p>
-                        </div>
-                        <p class="customer-name">Hector Gutierrez</p>
-                        <p class="address">Edif. El Sol & La Gaviota, Nro. 6-1, Nivel 6, Sector La Caranta, Calle El Cristo, Pampatar, Nueva Esparta, Venezuela</p>
-                        <p class="phone-number">+584123456789</p>
-                        <p class="customer-extra-info">Instalación | Retiro de antena</p>
-                    </div>
-                </div>   
-                <div class="customer">
-                    <button class="assign-button">Asignar +</button>
-                    <div class="customer-info">
-                        <div class="customer-info-header">
-                            <p class="contract-number">C1006565</p>
-                        </div>
-                        <p class="customer-name">Hector Gutierrez</p>
-                        <p class="address">Edif. El Sol & La Gaviota, Nro. 6-1, Nivel 6, Sector La Caranta, Calle El Cristo, Pampatar, Nueva Esparta, Venezuela</p>
-                        <p class="phone-number">+584123456789</p>
-                        <p class="customer-extra-info">Instalación | Retiro de antena</p>
-                    </div>
-                </div>   
-                <div class="customer">
-                    <button class="assign-button">Asignar +</button>
-                    <div class="customer-info">
-                        <div class="customer-info-header">
-                            <p class="contract-number">C1006565</p>
-                        </div>
-                        <p class="customer-name">Hector Gutierrez</p>
-                        <p class="address">Edif. El Sol & La Gaviota, Nro. 6-1, Nivel 6, Sector La Caranta, Calle El Cristo, Pampatar, Nueva Esparta, Venezuela</p>
-                        <p class="phone-number">+584123456789</p>
-                        <p class="customer-extra-info">Instalación | Retiro de antena</p>
-                    </div>
-                </div>   
-                <div class="customer">
-                    <button class="assign-button">Asignar +</button>
-                    <div class="customer-info">
-                        <div class="customer-info-header">
-                            <p class="contract-number">C1006565</p>
-                        </div>
-                        <p class="customer-name">Hector Gutierrez</p>
-                        <p class="address">Edif. El Sol & La Gaviota, Nro. 6-1, Nivel 6, Sector La Caranta, Calle El Cristo, Pampatar, Nueva Esparta, Venezuela</p>
-                        <p class="phone-number">+584123456789</p>
-                        <p class="customer-extra-info">Instalación | Retiro de antena</p>
-                    </div>
-                </div>   
-                <div class="customer">
-                    <button class="assign-button">Asignar +</button>
-                    <div class="customer-info">
-                        <div class="customer-info-header">
-                            <p class="contract-number">C1006565</p>
-                        </div>
-                        <p class="customer-name">Hector Gutierrez</p>
-                        <p class="address">Edif. El Sol & La Gaviota, Nro. 6-1, Nivel 6, Sector La Caranta, Calle El Cristo, Pampatar, Nueva Esparta, Venezuela</p>
-                        <p class="phone-number">+584123456789</p>
-                        <p class="customer-extra-info">Instalación | Retiro de antena</p>
-                    </div>
-                </div>   
-                <div class="customer">
-                    <button class="assign-button">Asignar +</button>
-                    <div class="customer-info">
-                        <div class="customer-info-header">
-                            <p class="contract-number">C1006565</p>
-                        </div>
-                        <p class="customer-name">Hector Gutierrez</p>
-                        <p class="address">Edif. El Sol & La Gaviota, Nro. 6-1, Nivel 6, Sector La Caranta, Calle El Cristo, Pampatar, Nueva Esparta, Venezuela</p>
-                        <p class="phone-number">+584123456789</p>
-                        <p class="customer-extra-info">Instalación | Retiro de antena</p>
-                    </div>
-                </div>   
-                
-            </div>
-            <a class="btn" id="id_preconfig_button" href="./preconfig.html">Preactivaciones</a>
+            
+            <div class="customers" id="id_customers_to_assign"></div>
+            
+            <a class="btn" id="id_preconfig_button" href="{% url 'preconfig' %}">Preactivaciones</a>
         </div>
     </div>
     <!-- Forms -->
+    <div class="div-fullpage generic-form-1" id="id_update_customer_form" style="display: none;"></div>
     <div class="div-fullpage generic-form-1" id="id_assign_installation_form" style="display: none;"></div>
     <!-- Footer -->
     <footer id="id_footer">

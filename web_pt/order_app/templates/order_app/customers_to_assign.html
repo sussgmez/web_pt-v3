@@ -10,7 +10,7 @@
     </form>
     <div class="customer-info">
         <div class="customer-info-header">
-            <p class="contract-number">C{{ customer.pk }}</p>
+            <p class="contract-number" onclick="get_form(`{% url 'update-customer' customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)});">C{{ customer.pk }}</p>
         </div>
         <p class="customer-name">{{ customer.customer_name }}</p>
         <p class="address">{{ customer.address }}</p>
@@ -18,5 +18,7 @@
         <p class="customer-extra-info">{{ customer.get_category_display }} | {{ customer.comment|is_none }}</p>
     </div>
 </div>   
+{% empty %}
+<p class="empty-customers">No hay instalaciones por asignar</p>
 {% endfor %}
     

@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView
 from .models import Customer, Order, Technician
-from .forms import CustomerForm, OrderForm, HSOrderForm, OrderAssignUpdateForm
+from .forms import CustomerForm, OrderForm, HSOrderForm, OrderAssignUpdateForm, OrderPreconfigUpdateForm
 
 # Create your views here.
 # Home
@@ -64,10 +64,7 @@ class CustomerListView(ListView):
         max_date = self.request.GET['max_date']
         if max_date == "": max_date = '2100-01-01'
 
-        min_date += " 00:00"
-        max_date += " 23:59"
-
-        if min_date != "1900-01-01 00:00" or max_date != "2100-01-01 23:59": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
+        if min_date != "1900-01-01" or max_date != "2100-01-01": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
 
         order_by = self.request.GET['order_by']
 
@@ -100,6 +97,15 @@ class ScheduledCustomers(ListView):
             customers = customers.filter(order__date_assigned=datetime(year=n[0], month=n[1], day=n[2]))
         return customers.order_by('order__time_assigned')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["technician"] = Technician.objects.get(pk=self.request.GET['technician'])
+        date = self.request.GET['date'].split('-')
+        context["date"] = date[2] + "/" + date[1] + "/" + date[0]
+        
+        return context
+    
+
 class CustomersToAssign(ListView):
     model = Customer
     template_name = "order_app/customers_to_assign.html"
@@ -130,6 +136,29 @@ class OrderAssignUpdate(UpdateView):
         context["technicians"] = Technician.objects.all()
         return context
 
+# Preconfig
+class Preconfig(TemplateView):
+    template_name = "order_app/preconfig.html"
+
+class PreconfigCustomers(ListView):
+    model = Customer
+    template_name = "order_app/preconfig_customers.html"
+
+    def get_queryset(self):
+        n = [int(x) for x in self.request.GET['date'].split('-')]
+        if self.request.GET['date'] != "":
+            customers = Customer.objects.filter(order__date_assigned=datetime(year=n[0], month=n[1], day=n[2]))
+            return customers.order_by('order__time_assigned')
+
+class OrderPreconfigUpdateView(UpdateView):
+    model = Order
+    template_name = "order_app/update_preconfig_order.html"
+    form_class = OrderPreconfigUpdateForm
+
+    def get_success_url(self): return reverse('preconfig')
+
+
+# Others
 def import_xlsx(request):
     if request.POST:
         df = pandas.read_excel(request.FILES['excel_file'])
@@ -223,10 +252,7 @@ def export_xlsx(request):
     max_date = request.GET['max_date']
     if max_date == "": max_date = '2100-01-01'
 
-    min_date += " 00:00"
-    max_date += " 23:59"
-
-    if min_date != "1900-01-01 00:00" or max_date != "2100-01-01 23:59": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
+    if min_date != "1900-01-01" or max_date != "2100-01-01": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
 
     df = pandas.DataFrame()
 

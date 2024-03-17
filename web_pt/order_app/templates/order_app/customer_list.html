@@ -53,7 +53,7 @@
         </div>
         <div>
             <p class="customer-label">Fecha asignada</p>
-            <p class="customer-field">{{ customer.order.date_assigned|date:"d/m/Y"|is_none }} | {{ customer.order.time_assigned|date:"h:i"|is_none }}</p>
+            <p class="customer-field">{{ customer.order.date_assigned|date:"d/m/Y"|is_none }} | {{ customer.order.time_assigned|date:"h:i a"|is_none }}</p>
         </div>
         
         {% if customer.order.completed %}

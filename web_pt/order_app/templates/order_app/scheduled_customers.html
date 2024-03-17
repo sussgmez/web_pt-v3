@@ -10,11 +10,10 @@
             <option value="1" {% if customer.order.customer_confirmation == 1 %} selected {% endif %}>Pendiente</option>
             <option value="2" {% if customer.order.customer_confirmation == 2 %} selected {% endif %}>Confirmado</option>
         </select>
-        
     </form>
     <div class="customer-info">
         <div class="customer-info-header">
-            <p class="contract-number">C{{ customer.pk }}</p>
+            <p class="contract-number" onclick="get_form(`{% url 'update-customer' customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)});">C{{ customer.pk }}</p>
             <svg width="1.5rem" height="1.5rem" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" onclick="show_customer_menu(event, this)">
             <path d="M24 19.5C24.89 19.5 25.76 19.7639 26.5001 20.2584C27.2401 20.7529 27.8169 21.4557 28.1575 22.2779C28.4981 23.1002 28.5872 24.005 28.4135 24.8779C28.2399 25.7508 27.8113 26.5526 27.182 27.182C26.5526 27.8113 25.7508 28.2399 24.8779 28.4135C24.005 28.5872 23.1002 28.4981 22.2779 28.1575C21.4557 27.8169 20.7529 27.2401 20.2584 26.5001C19.7639 25.76 19.5 24.89 19.5 24C19.5 22.8065 19.9741 21.6619 20.818 20.818C21.6619 19.9741 22.8065 19.5 24 19.5ZM1.5 24C1.5 24.89 1.76392 25.76 2.25839 26.5001C2.75285 27.2401 3.45566 27.8169 4.27792 28.1575C5.10019 28.4981 6.00499 28.5872 6.87791 28.4135C7.75082 28.2399 8.55264 27.8113 9.18198 27.182C9.81132 26.5526 10.2399 25.7508 10.4135 24.8779C10.5872 24.005 10.4981 23.1002 10.1575 22.2779C9.81686 21.4557 9.24009 20.7529 8.50007 20.2584C7.76005 19.7639 6.89002 19.5 6 19.5C4.80653 19.5 3.66193 19.9741 2.81802 20.818C1.97411 21.6619 1.5 22.8065 1.5 24ZM37.5 24C37.5 24.89 37.7639 25.76 38.2584 26.5001C38.7529 27.2401 39.4557 27.8169 40.2779 28.1575C41.1002 28.4981 42.005 28.5872 42.8779 28.4135C43.7508 28.2399 44.5526 27.8113 45.182 27.182C45.8113 26.5526 46.2399 25.7508 46.4135 24.8779C46.5872 24.005 46.4981 23.1002 46.1575 22.2779C45.8169 21.4557 45.2401 20.7529 44.5001 20.2584C43.76 19.7639 42.89 19.5 42 19.5C40.8065 19.5 39.6619 19.9741 38.818 20.818C37.9741 21.6619 37.5 22.8065 37.5 24Z" fill="black"/>
             </svg>
@@ -24,6 +23,10 @@
         <p class="phone-number">{{ customer.phone_1 }} / {{ customer.phone_2|is_none }}</p>
         <p class="customer-extra-info">{{ customer.get_category_display }} | {{ customer.comment|is_none }}</p>
         <div class="options-menu customer-menu" style="display: none;">
+            <div class="customer-menu-option" onclick="get_form(`{% url 'update-customer' customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)});">
+                <svg width="1rem" height="1rem" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M795.4 749.7c17.2-21.8 27.5-49.3 27.5-79.3 0-70.7-57.3-128-128-128s-128 57.3-128 128c0 29.9 10.3 57.5 27.5 79.3-70.6 36.5-118.9 110.2-118.9 195h73.1c0-80.7 65.6-146.3 146.3-146.3S841.2 864 841.2 944.7h73.1c0-84.7-48.4-158.4-118.9-195zM694.9 615.6c30.2 0 54.9 24.6 54.9 54.9 0 30.2-24.6 54.9-54.9 54.9-30.2 0-54.9-24.6-54.9-54.9 0-30.3 24.6-54.9 54.9-54.9z" fill="#000000"></path><path d="M109.7 73.1v877.8h329.2v-73.2h-256V146.3h658.3V512h73.1V73.1z" fill="#000000"></path><path d="M256 256h512v73.1H256zM256 402.3h365.7v73.1H256zM256 548.6h219.4v73.1H256z" fill="#000000"></path></g></svg>
+                <p>Información Cliente</p>
+            </div>
             <div class="customer-menu-option" onclick="get_form(`{% url 'update-order' customer.order.pk %}`, 'id_assign_installation_form')">
                 <svg width="1rem" height="1rem" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M57.6 40.4C55.4 40.8 53.6 40.4 52.8 39C52 37.6 52.6 35.6 54 34C52.2 32.2 50.2 31 47.8 30.4C47.2 32.4 45.8 34 44.2 34C42.6 34 41.2 32.6 40.6 30.4C38.2 31 36 32.2 34.4 34C35.8 35.6 36.4 37.6 35.6 39C34.8 40.4 32.8 40.8 30.8 40.4C30.2 41.6 30 42.8 30 44C30 45.2 30.2 46.4 30.4 47.6C32.6 47.2 34.4 47.6 35.2 49C36 50.4 35.4 52.4 34 54C35.8 55.8 37.8 57 40.2 57.6C40.8 55.6 42.2 54 43.8 54C45.4 54 46.8 55.4 47.4 57.6C49.8 57 52 55.8 53.6 54C52.2 52.4 51.6 50.4 52.4 49C53.2 47.6 55.2 47.2 57.2 47.6C57.6 46.4 57.6 45.2 57.6 44C57.6 42.8 57.8 41.6 57.6 40.4Z" stroke="black" stroke-width="4" stroke-miterlimit="10" stroke-linejoin="round"/>
@@ -46,5 +49,7 @@
         </div>
     </div>
 </div>
+{% empty %}
+<p class="empty-customers">El técnico: {{ technician.user.get_full_name }}, no tiene instalaciones asignadas para el {{ date }}</p>
 {% endfor %}
     
