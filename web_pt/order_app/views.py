@@ -173,7 +173,6 @@ class OrderPreconfigUpdateView(UpdateView):
     def get_success_url(self): return reverse('preconfig')
 
 # Others
-"""
 def import_xlsx(request):
     if request.POST:
         df = pandas.read_excel(request.FILES['excel_file'])
@@ -250,8 +249,8 @@ def import_xlsx(request):
                     obj.delete()
             
     return redirect('home')
-"""
 
+"""
 def import_xlsx(request):
     if request.POST:
         df = pandas.read_excel(request.FILES['excel_file'])
@@ -348,9 +347,8 @@ def import_xlsx(request):
                     obj.save()
                     order.save()
                 except Exception as e:
-                    print(e)
                     obj.delete()
-
+"""
 
 def export_xlsx(request):
     text_search = request.GET['text_search']

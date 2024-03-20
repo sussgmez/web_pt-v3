@@ -2,7 +2,6 @@
 
 {% for customer in customer_list %}
 
-{% if user.is_staff or not customer.order.customer_confirmation == 0 %}
 <div class="customer">
     <form class="assign-info" method="post" action="{% url 'update-h-s-order' customer.order.pk %}" onsubmit="event.preventDefault();submit_scheduled_customer(this)">
         {% csrf_token %}
@@ -53,7 +52,6 @@
         </div>
     </div>
 </div>
-{% endif %}
 
 {% empty %}
 <p class="empty-customers">El técnico: {{ technician.user.get_full_name }}, no tiene instalaciones asignadas para el {{ date }}</p>

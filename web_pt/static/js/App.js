@@ -139,7 +139,6 @@ async function submit_preconfig_customer(form) {
     })
 }
 
-
 function check_contract_number(value) {
     if (parseInt(value) >= 1000000 && parseInt(value) <= 1099999) {
         fetch(`./update_customer/${value}`)
