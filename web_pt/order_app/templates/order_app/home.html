@@ -20,6 +20,8 @@
     <div class="generic-page-1" id="id_customers_page">
         <div id="id_customers_page_header">
             <h1>Clientes</h1>
+            
+            {% if perms.foo.add_customer %}
             <button class="btn" id="id_btn_add_customer_options">Añadir +</button>
             <div class="options-menu" id="id_add_customer_options" style="display: none;">
                 <div class="add-customer-option" id="id_add_customer_option" onclick="get_form(`{% url 'add-customer' %}`, 'id_add_customer_form')">
@@ -38,6 +40,8 @@
                     <p>Importar .xlsx</p>
                 </div>
             </div>
+            {% endif %}
+                
             <form action="{% url 'import-xlsx' %}" method="post" enctype="multipart/form-data" id="select-excel-file" style="display: none;">
                 {% csrf_token %}
                 <input type="file" name="excel_file" id="id_import_file" onchange="this.form.submit()" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
@@ -49,7 +53,9 @@
                 <label for="id_installation_status" class="label">Status</label>
                 <select class="filter-input" id="id_installation_status" onchange="get_customer_list()">
                     <option value="nd">---- ----</option>
+                    {% if user.is_staff %}
                     <option value="or-to-assign">Por asignar</option>
+                    {% endif %}
                     <option value="or-assigned">Asignada</option>
                     <option value="or-completed">Finalizada</option>
                 </select>
@@ -67,7 +73,11 @@
             <div class="filter-input-w-label">
                 <label for="id_technician" class="label">Técnico</label>
                 <select class="filter-input" id="id_technician" name="id_technician" onchange="get_customer_list()" disabled>
+                    
+                    {% if user.is_staff %}
                     <option value="--">---- ----</option>
+                    {% endif %}
+                        
                     {% for technician in technicians %}
                     <option value="{{ technician.pk }}">{{ technician.user.get_full_name }}</option>  
                     {% endfor %}

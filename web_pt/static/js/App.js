@@ -214,7 +214,6 @@ window.onload = () => {
             } else {
                 $("#id_from_date").val("");
                 $("#id_to_date").val("");
-                $("#id_technician").val("--");
                 
                 $("#id_from_date").prop('disabled', true);
                 $("#id_to_date").prop('disabled', true);

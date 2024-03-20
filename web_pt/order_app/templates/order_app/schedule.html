@@ -37,10 +37,15 @@
                         <input type="date" id="id_date" class="selector" value="{% now 'Y-m-d' %}" onchange="get_schedule()">
                     </div>
                 </div>
+                
+                {% if user.is_staff %}    
                 <button id="id_btn_save_schedule" onclick="save_schedule()">Guardar</button>
+                {% endif %}
+                    
             </div>
             <div class="customers" id="id_schedule"></div>
         </div>
+        {% if user.is_staff %}
         <div id="id_to_assign_customers_section">
             <h2>Instalaciones por asignar</h2>
             <input type="text" class="search-customer" id="id_search_text_to_assign" placeholder="Buscar..." onkeyup="get_customers_to_assign()">
@@ -49,6 +54,7 @@
             
             <a class="btn" id="id_preconfig_button" href="{% url 'preconfig' %}">Preactivaciones</a>
         </div>
+        {% endif %}
     </div>
     <!-- Forms -->
     <div class="div-fullpage generic-form-1" id="id_update_customer_form" style="display: none;"></div>

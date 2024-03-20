@@ -1,11 +1,13 @@
 {% load order_app_extras %}
 
 {% for customer in customer_list %}
+
+{% if user.is_staff or not customer.order.customer_confirmation == 0 %}
 <div class="customer">
     <form class="assign-info" method="post" action="{% url 'update-h-s-order' customer.order.pk %}" onsubmit="event.preventDefault();submit_scheduled_customer(this)">
         {% csrf_token %}
-        <input type="time" name="time_assigned" class="input-assign input-assign-date" placeholder=" " id="id_time_assigned" value="{{customer.order.time_assigned|date:'H:i'}}">
-        <select name="customer_confirmation" id="id_customer_confirmation" class="input-assign input-assign-confirm" onchange="this.dataset.chosen = this.value" data-chosen="{{ customer.order.customer_confirmation }}">
+        <input type="time" name="time_assigned" class="input-assign input-assign-date" placeholder=" " id="id_time_assigned" value="{{customer.order.time_assigned|date:'H:i'}}" {% if not user.is_superuser %} disabled {% endif %}>
+        <select name="customer_confirmation" id="id_customer_confirmation" class="input-assign input-assign-confirm" onchange="this.dataset.chosen = this.value" data-chosen="{{ customer.order.customer_confirmation }}" {% if not user.is_superuser %} disabled {% endif %}>
             <option value="0" {% if customer.order.customer_confirmation == 0 %} selected {% endif %}>No citado</option>
             <option value="1" {% if customer.order.customer_confirmation == 1 %} selected {% endif %}>Pendiente</option>
             <option value="2" {% if customer.order.customer_confirmation == 2 %} selected {% endif %}>Confirmado</option>
@@ -39,16 +41,20 @@
                 </svg>
                 <p>Instalación</p>
             </div>
-            <form class="customer-menu-option customer-menu-option-danger-color" method="post" action="{% url 'update-assign-order' customer.order.pk %}" onclick="assign_order(this)">
-                {% csrf_token %}
-                <input type="hidden" name="technician" class="input-hidden-technician">
-                <input type="hidden" name="date_assigned" class="input-hidden-date-assigned">
-                <svg width="1rem" height="1rem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#e24b4b"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#e24b4b" fill-rule="evenodd" d="M5.781 4.414a7 7 0 019.62 10.039l-9.62-10.04zm-1.408 1.42a7 7 0 009.549 9.964L4.373 5.836zM10 1a9 9 0 100 18 9 9 0 000-18z"></path> </g></svg>
-                <p>Quitar</p>
-            </form>
+            {% if user.is_superuser %}
+                <form class="customer-menu-option customer-menu-option-danger-color" method="post" action="{% url 'update-assign-order' customer.order.pk %}" onclick="assign_order(this)">
+                    {% csrf_token %}
+                    <input type="hidden" name="technician" class="input-hidden-technician">
+                    <input type="hidden" name="date_assigned" class="input-hidden-date-assigned">
+                    <svg width="1rem" height="1rem" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#e24b4b"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#e24b4b" fill-rule="evenodd" d="M5.781 4.414a7 7 0 019.62 10.039l-9.62-10.04zm-1.408 1.42a7 7 0 009.549 9.964L4.373 5.836zM10 1a9 9 0 100 18 9 9 0 000-18z"></path> </g></svg>
+                    <p>Quitar</p>
+                </form>
+            {% endif %}
         </div>
     </div>
 </div>
+{% endif %}
+
 {% empty %}
 <p class="empty-customers">El técnico: {{ technician.user.get_full_name }}, no tiene instalaciones asignadas para el {{ date }}</p>
 {% endfor %}

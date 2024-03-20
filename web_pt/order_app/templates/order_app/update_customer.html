@@ -68,9 +68,12 @@
             <span class="floating-label">Observaciones</span>
         </div>
         <div class="form-btns">
-            <button class="btn">Editar</button>
             <button class="btn btn-alt" onclick="get_form(`{% url 'update-order' customer.order.pk %}`, 'id_assign_installation_form'); $('#id_update_customer_form').hide()">Ver instalación</button>
+            
+            {% if perms.order_app.change_customer %}
+            <button class="btn">Editar</button>
             <button class="btn btn-cancel" onclick="get_form(`{% url 'delete-customer' customer.pk %}`, 'id_delete_customer');">Eliminar</button>
+            {% endif %}
         </div>
     </div>
 </form>

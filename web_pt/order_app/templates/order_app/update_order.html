@@ -13,14 +13,23 @@
         </div>
         <div class="form-field colspan-2">
             {{ form.technician }}
+            {% if not user.is_staff %}
+                <input type="hidden" name="technician" value="{{ form.technician.value }}">
+            {% endif %}
             <span class="floating-label">Técnico</span>
         </div>
         <div class="form-field">
             {{ form.date_assigned }}
+            {% if not user.is_staff %}
+                <input type="hidden" name="date_assigned" value="{{ form.date_assigned.value|date:'Y-m-d' }}">
+            {% endif %}
             <span class="floating-label">Fecha asignada</span>
         </div>
         <div class="form-field">
             {{ form.time_assigned }}
+            {% if not user.is_staff %}
+                <input type="hidden" name="time_assigned" value="{{ form.time_assigned.value|date:'H:i:s' }}">
+            {% endif %}
             <span class="floating-label">Hora asignada</span>
         </div>
         <div class="separator-w-p colspan-2">
@@ -89,16 +98,18 @@
         {{ form.completed }}
 
         <div class="form-btns">
-            <button class="btn">Editar</button>
             <button class="btn btn-alt" onclick="get_form(`{% url 'update-customer' form.instance.customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)}); $('#id_assign_installation_form').hide()">Ver Cliente</button>
             
             <button class="btn btn-alt" onclick="event.preventDefault()">Mensaje</button>
             
-            {% if not form.instance.completed %}
-            <button class="btn btn-success" onclick="$('#id_completed').attr('value','True'); $('#id_assign_installation_form').hide()">Finalizar</button>
-            {% else %}
-            <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False'); $('#id_assign_installation_form').hide()">Cancelar</button>
-            {% endif %}            
+            {% if perms.order_app.change_order %}
+                <button class="btn">Editar</button>
+                {% if not form.instance.completed %}
+                <button class="btn btn-success" onclick="$('#id_completed').attr('value','True'); $('#id_assign_installation_form').hide()">Finalizar</button>
+                {% else %}
+                <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False'); $('#id_assign_installation_form').hide()">Cancelar</button>
+                {% endif %}            
+            {% endif %}
         </div>
     </div>
 </form>

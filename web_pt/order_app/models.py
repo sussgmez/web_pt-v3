@@ -113,7 +113,8 @@ class Order(models.Model):
     def __str__(self):
         return 'OR-{} | {}'.format(self.pk, self.customer)
     
-
+"""
 @receiver(post_save, sender=Customer)
 def customer_post_save_receiver(sender, instance, **kwargs):
     if kwargs['created']: Order.objects.create(customer=instance)
+"""

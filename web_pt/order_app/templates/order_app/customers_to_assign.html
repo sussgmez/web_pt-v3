@@ -2,7 +2,7 @@
 
 {% for customer in customer_list %}
 <div class="customer">
-    <form class="assign-button" method="post" action="{% url 'update-assign-order' customer.order.pk %}" onclick="event.preventDefault();this.querySelector('.input-hidden-technician').setAttribute('value', $('#id_technician').val());this.querySelector('.input-hidden-date-assigned').setAttribute('value', $('#id_date').val());assign_order(this)">
+    <form class="assign-button" method="post" action="{% url 'update-assign-order' customer.order.pk %}"  {% if user.is_superuser %} onclick="event.preventDefault();this.querySelector('.input-hidden-technician').setAttribute('value', $('#id_technician').val());this.querySelector('.input-hidden-date-assigned').setAttribute('value', $('#id_date').val());assign_order(this)" {% endif %}>
         {% csrf_token %}
         <p>Asignar +</p>
         <input type="hidden" name="technician" class="input-hidden-technician">

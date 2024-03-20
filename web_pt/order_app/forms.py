@@ -21,14 +21,22 @@ class CustomerForm(forms.ModelForm):
             'comment':forms.Textarea(attrs={'rows':'2','class':'form-input form-input-textarea', 'placeholder':' '}),
         }
 
+    def __init__(self, *args, **kwargs):
+        disabled_fields = kwargs.pop('disabled_fields', None)
+        super(CustomerForm, self).__init__(*args, **kwargs)
+        if disabled_fields != None:
+            for field in disabled_fields:
+                self.fields[field].widget.attrs['disabled'] = True
+
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['technician', 'date_assigned', 'time_assigned', 'onu_serial', 'router_serial', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
         widgets = {
             'technician':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
-            'date_assigned':forms.DateInput(format='%Y-%m-%d', attrs={'type':'date','class':'form-input', 'placeholder':' '}),
-            'time_assigned':forms.TimeInput(attrs={'type':'time', 'class':'form-input', 'placeholder':' '}),
+            'date_assigned':forms.DateInput(format='%Y-%m-%d', attrs={'type':'date','class':'form-input only-superuser', 'placeholder':' '}),
+            'time_assigned':forms.TimeInput(attrs={'type':'time', 'class':'form-input only-superuser', 'placeholder':' '}),
             'onu_serial':forms.TextInput(attrs={'class':'form-input', 'placeholder':' '}),
             'router_serial':forms.TextInput(attrs={'class':'form-input', 'placeholder':' '}),
             'zone':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
@@ -48,6 +56,16 @@ class OrderForm(forms.ModelForm):
 
             'completed': forms.HiddenInput()
         }
+    
+    def __init__(self, *args, **kwargs):
+        disabled_fields = kwargs.pop('disabled_fields', None)
+        super(OrderForm, self).__init__(*args, **kwargs)
+        if disabled_fields != None:
+            for field in disabled_fields:
+                self.fields[field].widget.attrs['disabled'] = True
+            
+    
+    
 
 class HSOrderForm(forms.ModelForm):
     
@@ -62,7 +80,6 @@ class OrderAssignUpdateForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ("technician", "date_assigned")
-
 
 class OrderPreconfigUpdateForm(forms.ModelForm):
     class Meta:
