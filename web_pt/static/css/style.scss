@@ -580,10 +580,9 @@ input[type=number] {appearance: textfield;}
         }
         @media (max-width: $md_screen) {
             grid-template-columns: 1fr;
-            .btns-prev-next {
+            .btn-pagination {
                 grid-column: auto;
             }
-        
         }
     }
 }

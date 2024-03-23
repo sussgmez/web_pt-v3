@@ -584,7 +584,7 @@ input[type=number] {
   #id_customers_page #id_customer_list {
     grid-template-columns: 1fr;
   }
-  #id_customers_page #id_customer_list .btns-prev-next {
+  #id_customers_page #id_customer_list .btn-pagination {
     grid-column: auto;
   }
 }
