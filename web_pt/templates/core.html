@@ -16,10 +16,15 @@
     <title>Web PT | {% block title %}{% endblock title %}</title>
 </head>
 <body>
+    <div id="id_alert_messages">
+        {% for message in messages %}
+            <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    </div>
 
     {% block content %}
     {% endblock content %}
-    
+
     <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
     <script src="{% static 'js/App.js' %}"></script>
 </body>

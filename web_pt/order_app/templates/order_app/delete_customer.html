@@ -1,4 +1,4 @@
-<form class="customer-form" method="post" action="{% url 'delete-customer' customer.contract_number %}" onsubmit="event.preventDefault();save_customer(this); $('#id_delete_customer').hide(); $('#id_update_customer_form').hide();">
+<form class="customer-form" id="id_delete_customer_form" method="post" action="{% url 'delete-customer' customer.contract_number %}" onsubmit="event.preventDefault();save_customer(this); $('#id_delete_customer').hide(); $('#id_update_customer_form').hide();">
     {% csrf_token %}
     <div class="form-fields">
         <h1>¿Está seguro que desea eliminar el cliente C{{ customer.contract_number }}?</h1>

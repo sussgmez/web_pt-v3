@@ -70,9 +70,9 @@
         <div class="form-btns">
             {% if perms.order_app.change_customer %}
             <button class="btn">Editar</button>
-            <button class="btn btn-cancel" onclick="get_form(`{% url 'delete-customer' customer.pk %}`, 'id_delete_customer');">Eliminar</button>
+            <button class="btn btn-cancel" onclick="event.preventDefault();get_form(`{% url 'delete-customer' customer.pk %}`, 'id_delete_customer');">Eliminar</button>
             {% endif %}
-            <button class="btn btn-alt" onclick="get_form(`{% url 'update-order' customer.order.pk %}`, 'id_assign_installation_form'); $('#id_update_customer_form').hide()">Ver instalación</button>
+            <button class="btn btn-alt" onclick="event.preventDefault();get_form(`{% url 'update-order' customer.order.pk %}`, 'id_assign_installation_form'); $('#id_update_customer_form').hide()">Ver instalación</button>
         </div>
     </div>
 </form>

@@ -3,6 +3,7 @@ from io import BytesIO
 from datetime import datetime
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView
 from .models import Customer, Order, Technician
@@ -25,7 +26,9 @@ class CustomerCreateView(CreateView):
     form_class = CustomerForm
     template_name = 'order_app/add_customer.html'
 
-    def get_success_url(self): return reverse('home')
+    def get_success_url(self): 
+        messages.success(self.request, "Se ha añadido al cliente correctamente.")
+        return reverse('home')
 
 class CustomerUpdateView(UpdateView):
     model = Customer
@@ -188,11 +191,14 @@ def import_xlsx(request):
             date_received = datetime(day=int(received_date_txt[0:2]), month=int(received_date_txt[2:4]), year=int(received_date_txt[4:8]))
         except: pass
 
+        added_customers = []
+
         for id, values in df.iterrows():
             try:
                 for i in range(0,11): values.iloc[i]
                 obj, created = Customer.objects.get_or_create(contract_number=values['contract_number'])
             except: continue
+
 
             if created:
                 try:
@@ -200,12 +206,13 @@ def import_xlsx(request):
                     obj.customer_name = ''.join(filter(lambda x: x in printable, values['customer_name'])).title()
                     obj.address = ''.join(filter(lambda x: x in printable, values['address'])).title().title().replace('Calle Calle', 'Calle').replace('Urb. Urb.', 'Urb.').replace('Ii', 'II')
 
-                    aux_phone_1 = str(int(values['phone_1']))
+                    aux_phone_1 = str(math.trunc(float(values['phone_1'])))
                     obj.phone_2 = ""
                     if values['phone_2'] != "": 
-                        aux_phone_2 = str(int(values['phone_2']))
+                        aux_phone_2 = str(math.trunc(float(values['phone_2'])))
                         obj.phone_2 = "0" + aux_phone_2 if aux_phone_2[0] == "4" else aux_phone_2
                     obj.phone_1 = "0" + aux_phone_1 if aux_phone_1[0] == "4" else aux_phone_1
+
 
                     aux_plan = values['plan'].upper()
                     if aux_plan == 'BASICO' or aux_plan == 'BÁSICO':
@@ -243,12 +250,72 @@ def import_xlsx(request):
                     obj.comment = values['comment'].title()
 
                     obj.save()
+                    added_customers.append(obj.contract_number) 
 
-                except:
-                    obj.delete()
+                except: obj.delete()
             
+        if len(added_customers) == 0: messages.error(request, "No se encontraron clientes para añadir. Favor subir el archivo con el siguiente formato [Nro. De Contrato, Nombre Cliente, Tipo, Vendedor, Dia De Pago, Teléfono 1, Teléfono 2, Dirección, Email, Plan, Asignado a, Observaciones]")
+        else: 
+            message = "Clientes añadidos:"
+            for customer in added_customers:
+                message+= " C" + str(customer)
+            messages.success(request, message)
+
     return redirect('home')
 
+def export_xlsx(request):
+    text_search = request.GET['text_search']
+        
+    customers = Customer.objects.filter(contract_number__contains=text_search) | Customer.objects.filter(customer_name__contains=text_search) | Customer.objects.filter(address__contains=text_search)
+    
+    status_search = request.GET['status_search']
+    if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False)
+    elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False)
+    elif (status_search == 'or-completed'): customers = customers.filter(order__completed=True)
+    
+    min_date = request.GET['min_date']
+    if min_date == "": min_date = '1900-01-01'
+
+    max_date = request.GET['max_date']
+    if max_date == "": max_date = '2100-01-01'
+
+    if min_date != "1900-01-01" or max_date != "2100-01-01": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
+
+    df = pandas.DataFrame()
+
+    for customer in customers: 
+
+        df_aux = pandas.DataFrame([[
+            customer.order.date_assigned.strftime('%A') if customer.order.date_assigned != None else "",
+            1,
+            customer.order.date_assigned.strftime('%d/%m/%Y') if customer.order.date_assigned != None else "",
+            customer.contract_number, 
+            customer.customer_name, 
+            customer.address[:50],
+            customer.order.drop_used if customer.order.drop_used != None and customer.order.drop_used > 250 else "",
+            customer.order.hook_used,
+            customer.order.drop_used,
+            customer.order.drop_serial,
+            customer.order.onu_serial,
+            customer.order.router_serial,
+            customer.order.technician,
+        ]])  
+        df = pandas.concat([df, df_aux])
+
+    df = df.rename(columns={0:'DIA', 1:'ITEM', 2:'FECHA', 3:'CONTRATO', 4:'NOMBRE CLIENTE', 5:'DIRECCION', 6:'+ DE 250M', 7:'TENSORES', 8:'MTS DROP', 9:'SN. DROP', 10:'SERIAL ONU', 11:'SERIAL ROUTER', 12:'TÉCNICO'})
+
+    with BytesIO() as b:
+        with pandas.ExcelWriter(b) as writer:
+            df.to_excel(writer, sheet_name='DATA 1', index=False)
+        filename = f'{str(datetime.now().strftime("%d-%m-%Y %H%M%S"))}.xlsx'
+        res = HttpResponse(
+            b.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        res['Content-Disposition'] = f'attachment; filename={filename}'
+        return res
+
+    
 """
 def import_xlsx(request):
     if request.POST:
@@ -348,57 +415,3 @@ def import_xlsx(request):
                 except Exception as e:
                     obj.delete()
 """
-
-def export_xlsx(request):
-    text_search = request.GET['text_search']
-        
-    customers = Customer.objects.filter(contract_number__contains=text_search) | Customer.objects.filter(customer_name__contains=text_search) | Customer.objects.filter(address__contains=text_search)
-    
-    status_search = request.GET['status_search']
-    if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False)
-    elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False)
-    elif (status_search == 'or-completed'): customers = customers.filter(order__completed=True)
-    
-    min_date = request.GET['min_date']
-    if min_date == "": min_date = '1900-01-01'
-
-    max_date = request.GET['max_date']
-    if max_date == "": max_date = '2100-01-01'
-
-    if min_date != "1900-01-01" or max_date != "2100-01-01": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
-
-    df = pandas.DataFrame()
-
-    for customer in customers: 
-
-        df_aux = pandas.DataFrame([[
-            customer.order.date_assigned.strftime('%A') if customer.order.date_assigned != None else "",
-            1,
-            customer.order.date_assigned.strftime('%d/%m/%Y') if customer.order.date_assigned != None else "",
-            customer.contract_number, 
-            customer.customer_name, 
-            customer.address[:50],
-            customer.order.drop_used if customer.order.drop_used != None and customer.order.drop_used > 250 else "",
-            customer.order.hook_used,
-            customer.order.drop_used,
-            customer.order.drop_serial,
-            customer.order.onu_serial,
-            customer.order.router_serial,
-            customer.order.technician,
-        ]])  
-        df = pandas.concat([df, df_aux])
-
-    df = df.rename(columns={0:'DIA', 1:'ITEM', 2:'FECHA', 3:'CONTRATO', 4:'NOMBRE CLIENTE', 5:'DIRECCION', 6:'+ DE 250M', 7:'TENSORES', 8:'MTS DROP', 9:'SN. DROP', 10:'SERIAL ONU', 11:'SERIAL ROUTER', 12:'TÉCNICO'})
-
-    with BytesIO() as b:
-        with pandas.ExcelWriter(b) as writer:
-            df.to_excel(writer, sheet_name='DATA 1', index=False)
-        filename = f'{str(datetime.now().strftime("%d-%m-%Y %H%M%S"))}.xlsx'
-        res = HttpResponse(
-            b.getvalue(),
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
-        res['Content-Disposition'] = f'attachment; filename={filename}'
-        return res
-
-    

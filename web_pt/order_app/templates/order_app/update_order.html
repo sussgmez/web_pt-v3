@@ -116,7 +116,7 @@
                     {% endif %}            
                 {% endif %}
             {% endif %}
-            <button class="btn btn-alt" onclick="get_form(`{% url 'update-customer' form.instance.customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)}); $('#id_assign_installation_form').hide()">Ver Cliente</button>
+            <button class="btn btn-alt" onclick="event.preventDefault();get_form(`{% url 'update-customer' form.instance.customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)}); $('#id_assign_installation_form').hide()">Ver Cliente</button>
         </div>
     </div>
 </form>

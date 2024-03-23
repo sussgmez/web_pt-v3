@@ -23,6 +23,7 @@ async function get_form(url, id_div) {
 
 function save_schedule() {
     $('.assign-info').submit()
+    add_alert_message("Agenda guardada.")
 }
 
 async function submit_scheduled_customer(form) {
@@ -53,6 +54,8 @@ async function save_customer(form) {
         if (window.location.pathname == '/preconfig/') { 
             get_preconfig_customers()
         }
+        if (form.id == 'id_delete_customer_form') add_alert_message("Se ha eliminado el cliente.")
+        else add_alert_message("Cambios guardados con éxito.")
     })
 }
 
@@ -232,6 +235,12 @@ function get_customer_message(customer_form) {
     navigator.clipboard.writeText(customer_message)
 }
 
+function add_alert_message(message_text) {
+    let message = $('<p></p>').text(message_text).addClass("success");
+    setTimeout(() => {message.fadeOut()}, 4000)
+    $('#id_alert_messages').append(message)
+}
+
 window.onload = () => {
     document.addEventListener('click', function () {
         $('.options-menu').hide()
@@ -269,4 +278,7 @@ window.onload = () => {
     else if (window.location.pathname == '/preconfig/') {
         get_preconfig_customers()
     }
+    $('#id_alert_messages').children().each(function () { 
+        setTimeout(() => {$(this).fadeOut()}, 4000)
+    })
 }
