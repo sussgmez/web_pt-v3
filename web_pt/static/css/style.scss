@@ -72,6 +72,35 @@ input[type=number] {appearance: textfield;}
 .options-menu {
     z-index: 100;
 }
+
+//Alert messages
+#id_alert_messages {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 1rem;
+    z-index: 1000;
+    p {
+        max-width: 40rem;
+        margin: auto;
+        padding: 0.65rem 1rem;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-top: 0.25rem;
+        border-radius: 2px;
+        box-shadow: 0 0 2px $black-06;
+    }
+    .success {
+        background-color: #DCF1E9;
+        color: rgba($success-color, 0.9);
+    }
+    .error {
+        background-color: #FCEDED;
+        color: rgba($danger-color, 0.8);
+    }
+    
+}
+
 // Header
 #id_header {
     display: flex;
@@ -580,7 +609,7 @@ input[type=number] {appearance: textfield;}
         }
         @media (max-width: $md_screen) {
             grid-template-columns: 1fr;
-            .btn-pagination {
+            .btns-pagination {
                 grid-column: auto;
             }
         }

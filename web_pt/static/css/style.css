@@ -68,6 +68,32 @@ input[type=number] {
   z-index: 100;
 }
 
+#id_alert_messages {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 1rem;
+  z-index: 1000;
+}
+#id_alert_messages p {
+  max-width: 40rem;
+  margin: auto;
+  padding: 0.65rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+  border-radius: 2px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
+}
+#id_alert_messages .success {
+  background-color: #DCF1E9;
+  color: rgba(20, 161, 109, 0.9);
+}
+#id_alert_messages .error {
+  background-color: #FCEDED;
+  color: rgba(226, 75, 75, 0.8);
+}
+
 #id_header {
   display: flex;
   justify-content: space-between;
@@ -584,7 +610,7 @@ input[type=number] {
   #id_customers_page #id_customer_list {
     grid-template-columns: 1fr;
   }
-  #id_customers_page #id_customer_list .btn-pagination {
+  #id_customers_page #id_customer_list .btns-pagination {
     grid-column: auto;
   }
 }
