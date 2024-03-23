@@ -1,4 +1,3 @@
-from django.forms import BaseModelForm
 import pandas, string, math
 from io import BytesIO
 from datetime import datetime

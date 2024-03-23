@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.dispatch import receiver
@@ -113,8 +114,16 @@ class Order(models.Model):
     def __str__(self):
         return 'OR-{} | {}'.format(self.pk, self.customer)
     
-"""
+
 @receiver(post_save, sender=Customer)
 def customer_post_save_receiver(sender, instance, **kwargs):
     if kwargs['created']: Order.objects.create(customer=instance)
-"""
+
+
+@receiver(post_save, sender=Order)
+def order_post_save_receiver(sender, instance, **kwargs):
+    if instance.technician != None and instance.date_assigned == None:
+        instance.date_assigned = datetime.datetime.now()
+        instance.save()
+
+

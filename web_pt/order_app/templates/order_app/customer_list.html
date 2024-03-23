@@ -89,17 +89,26 @@
 {% endfor %}
     
 
-<div class="btns-prev-next colspan-2">
-    <button class="btn" id="id_btn_prev" {% if page_obj.has_previous %}onclick="get_customer_list({{page_obj.previous_page_number}}); window.scrollTo(0,0)"{% else %}disabled{% endif %}>
-        <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.3508 11.2501L11.2096 6.53852L10.1654 5.46167L3.4226 12.0001L10.1654 18.5385L11.2096 17.4617L6.3508 12.7501H21V11.2501H6.3508Z" fill="black"/>
-        </svg>                
-        Anterior
-    </button>
-    <button class="btn" id="id_btn_next" {% if page_obj.has_next %}onclick="get_customer_list({{page_obj.next_page_number}}); window.scrollTo(0,0)"{% else %}disabled{% endif %}>
-        Siguiente
-        <svg width="1.25rem" height="1.25rem" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" clip-rule="evenodd" d="M17.6492 11.2501L12.7904 6.53852L13.8346 5.46167L20.5774 12.0001L13.8346 18.5385L12.7904 17.4617L17.6492 12.7501H3V11.2501H17.6492Z" fill="black"/>
-        </svg>                        
-    </button>
+<div class="btns-pagination colspan-2">
+    
+    {% if page_obj.has_previous %}
+    <button class="btn-pagination" onclick="get_customer_list({{page_obj.previous_page_number}})"><svg width="0.85rem" height="0.85rem" viewBox="0 0 1024.00 1024.00" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000" stroke-width="51.2"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M768 903.232l-50.432 56.768L256 512l461.568-448 50.432 56.768L364.928 512z" fill="#000000"></path></g></svg></button>
+        {% if not page_obj.previous_page_number == 1 %}
+        <button class="btn-pagination" onclick="get_customer_list(1)">1</button>
+        <p class="ellipsis-pagination">...</p>
+        {% endif %}
+    <button class="btn-pagination" onclick="get_customer_list({{page_obj.previous_page_number}})">{{page_obj.previous_page_number}}</button>
+    {% endif %}
+    
+    <button class="btn-pagination current">{{ page_obj.number }}</button>
+
+    {% if page_obj.has_next %}
+    <button class="btn-pagination" onclick="get_customer_list({{page_obj.next_page_number}})">{{page_obj.next_page_number}}</button>
+        {% if not page_obj.next_page_number == page_obj.paginator.num_pages %}
+        <p class="ellipsis-pagination">...</p>
+        <button class="btn-pagination" onclick="get_customer_list({{page_obj.paginator.num_pages}})">{{page_obj.paginator.num_pages}}</button>
+        {% endif %}
+    <button class="btn-pagination" onclick="get_customer_list({{page_obj.next_page_number}})"><svg width="0.85rem" height="0.85rem" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" stroke="#000000" stroke-width="51.2"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M256 120.768L306.432 64 768 512l-461.568 448L256 903.232 659.072 512z" fill="#000000"></path></g></svg></button>
+    {% endif %}
+
 </div>

@@ -28,7 +28,6 @@ class CustomerForm(forms.ModelForm):
             for field in disabled_fields:
                 self.fields[field].widget.attrs['disabled'] = True
 
-
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -64,22 +63,15 @@ class OrderForm(forms.ModelForm):
             for field in disabled_fields:
                 self.fields[field].widget.attrs['disabled'] = True
             
-    
-    
-
 class HSOrderForm(forms.ModelForm):
-    
     class Meta:
         model = Order
         fields = ("time_assigned", "customer_confirmation")
-        widgets = {
-            'date_assigned':forms.DateTimeInput(format='%H:%M', attrs={'type':'time', 'class':'form-input', 'placeholder':' '}),
-        }
 
 class OrderAssignUpdateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ("technician", "date_assigned")
+        fields = ("technician", "date_assigned", "time_assigned")
 
 class OrderPreconfigUpdateForm(forms.ModelForm):
     class Meta:

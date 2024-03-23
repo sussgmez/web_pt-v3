@@ -8,20 +8,22 @@
         <p class="customer-comment">{{ customer.comment|is_none }}</p>
     </div>
     <hr class="separator">
-    <form class="preconfig-form" method="post" action="{% url 'update-preconfig-order' customer.order.pk %}" onchange="event.preventDefault();submit_preconfig_customer(this)">
+    <form class="preconfig-form" method="post" action="{% url 'update-preconfig-order' customer.order.pk %}" onsubmit="event.preventDefault();submit_preconfig_customer(this)">
         {% csrf_token %}
+        <input class="preconfig-message-contract-number" type="hidden" value="{{ customer.contract_number }}">
+        
         <div class="form-field">
-            <input class="form-input" type="text" value="{{ customer.get_plan_display }}" readonly 
+            <input class="preconfig-message-plan form-input" type="text" value="{{ customer.get_plan_display }}" readonly 
             {% if not user.is_superuser %} disabled {% endif %}>
             <span class="floating-label">Plan</span>
         </div>
         <div class="form-field">
-            <input class="form-input" type="text" value="{{ customer.get_category_display }}" readonly {% if not user.is_superuser %} disabled {% endif %}>
+            <input class="preconfig-message-category form-input" type="text" value="{{ customer.get_category_display }}" readonly {% if not user.is_superuser %} disabled {% endif %}>
             <span class="floating-label">Categoría</span>
         </div>
         <div class="connection-data colspan-2">
             <div class="form-field">
-                <input class="form-input" type="number" placeholder=" " name="zone" value="{{ customer.order.zone|if_input_none }}" {% if not user.is_superuser %} disabled {% endif %}>
+                <input class="preconfig-message-zone form-input" type="number" placeholder=" " name="zone" value="{{ customer.order.zone|if_input_none }}" {% if not user.is_superuser %} disabled {% endif %}>
                 <span class="floating-label">Zona</span>
             </div>
             <div class="form-field">
@@ -42,7 +44,7 @@
             </div>
         </div>
         <div class="form-field colspan-2">
-            <input class="form-input" type="text" placeholder=" " name="onu_serial" value="{{ customer.order.onu_serial|if_input_none }}" {% if not user.is_superuser %} disabled {% endif %}>
+            <input class="preconfig-message-onu-serial form-input" type="text" placeholder=" " name="onu_serial" value="{{ customer.order.onu_serial|if_input_none }}" {% if not user.is_superuser %} disabled {% endif %}>
             <span class="floating-label">Serial ONU</span>
         </div>
         <div class="form-field colspan-2">

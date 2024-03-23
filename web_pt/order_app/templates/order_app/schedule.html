@@ -37,11 +37,9 @@
                         <input type="date" id="id_date" class="selector" value="{% now 'Y-m-d' %}" onchange="get_schedule()">
                     </div>
                 </div>
-                
-                {% if user.is_staff %}    
+                {% if user.is_superuser %}    
                 <button id="id_btn_save_schedule" onclick="save_schedule()">Guardar</button>
                 {% endif %}
-                    
             </div>
             <div class="customers" id="id_schedule"></div>
         </div>

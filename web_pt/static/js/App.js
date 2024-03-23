@@ -191,6 +191,47 @@ async function export_xlsx() {
     })
 }
 
+function get_preconfig_message() { 
+    let preconfig_message = ""
+    $('.preconfig-form').each(function (index, element) {
+        let contract_number = element.querySelector('.preconfig-message-contract-number').value;
+        let category = element.querySelector('.preconfig-message-category').value;
+        let plan = element.querySelector('.preconfig-message-plan').value;
+        let zone = element.querySelector('.preconfig-message-zone').value;
+        let onu_serial = element.querySelector('.preconfig-message-onu-serial').value;
+        preconfig_message+=`C${contract_number}, Zona ${zone}, ${plan}, ${onu_serial}, ${category}\n`
+    });
+    navigator.clipboard.writeText(preconfig_message)
+}
+
+function get_customer_message(customer_form) {
+    let category = customer_form.querySelector('#id_category').value;
+    let contract_number = customer_form.querySelector('#id_contract_number').value;
+    let customer_name = customer_form.querySelector('#id_customer_name').value;
+    let address = customer_form.querySelector('#id_address').value;
+    let plan = customer_form.querySelector('#id_plan').value;
+    let zone = customer_form.querySelector('#id_zone').value;
+    let olt = customer_form.querySelector('#id_olt').value;
+    let card = customer_form.querySelector('#id_card').value;
+    let pon = customer_form.querySelector('#id_pon').value;
+    let box = customer_form.querySelector('#id_box').value;
+    let port = customer_form.querySelector('#id_port').value;
+    
+    let box_power = customer_form.querySelector('#id_box_power').value;
+    let house_power = customer_form.querySelector('#id_house_power').value;
+
+    let onu_serial = customer_form.querySelector('#id_onu_serial').value;
+
+    let drop_serial = customer_form.querySelector('#id_drop_serial').value;
+    let drop_used = customer_form.querySelector('#id_drop_used').value;
+
+    let hook_used = customer_form.querySelector('#id_hook_used').value;
+    let fast_conn_used = customer_form.querySelector('#id_fast_conn_used').value;
+
+    let customer_message = `*Validar potencia | ${category}*\n*Nro. De Contrato:* C${contract_number}\n*Nombre:* ${customer_name}\n*Dirección:* ${address}\n*Plan:* ${plan}\n*Z${zone}.OLT${olt}.T${card}.PON${pon}.C${box}.PUERTO${port}*\n*PC:* ${box_power}dBm\n*PR:* ${house_power}dBm\n*Serial ONU:* ${onu_serial}\n*DROP:* ${drop_serial}/${drop_used}m\n*Tensores:* ${hook_used}\n*Conectores:* ${fast_conn_used}`
+    navigator.clipboard.writeText(customer_message)
+}
+
 window.onload = () => {
     document.addEventListener('click', function () {
         $('.options-menu').hide()
@@ -227,6 +268,5 @@ window.onload = () => {
     }
     else if (window.location.pathname == '/preconfig/') {
         get_preconfig_customers()
-        
     }
 }
