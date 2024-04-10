@@ -1,0 +1,23 @@
+<form class="form-add-device" method="post" action="{% url 'add-onu' %}" onsubmit="event.preventDefault();check_serial_onu();save_onu(this)">
+    {% csrf_token %}
+    <div class="form-inputs">
+        <div class="form-input-w-label">
+            <label class="label">S/N Onu</label>    
+            {{ form.serial }}
+        </div>
+        <div class="form-input-w-label">
+            <label class="label">Contrato</label>    
+            {{ form.order }}
+        </div>
+        <div class="form-input-w-label">
+            <label class="label">Asignado a</label>    
+            {{ form.technician }}
+        </div>
+        <div class="form-input-w-label">
+            <label class="label">Opciones</label>    
+            <div class="device-options">
+                <button class="btn">Añadir</button>
+            </div>
+        </div>
+    </div>
+</form>

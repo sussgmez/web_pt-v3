@@ -1,0 +1,19 @@
+{% load order_app_extras %}
+<div class="device-row device-row-header">
+    <p class="cell">S/N ONU</p>
+    <p class="cell">Cliente</p>
+    <p class="cell">Asignado a</p>
+    <p class="cell">Última modificación</p>
+</div>
+{% for onu in onu_list %}
+<div class="device-row {% if onu.order.completed %}completed{% endif %}" onclick="get_update_onu_form('{{ onu.pk }}')">
+    <p class="cell">{{ onu.serial }}</p>
+    <p class="cell">{{ onu.order.customer.pk|is_none }}</p>
+    <p class="cell">{{ onu.technician|is_none }}</p>
+    <p class="cell">{{ onu.date_updated|date:"d-m-Y" }}</p>
+</div> 
+{% empty %}
+<div class="device-list-empty">
+    <p>No se encontraron resultados.</p>
+</div>
+{% endfor %}

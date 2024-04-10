@@ -8,7 +8,7 @@
         <p class="customer-comment">{{ customer.comment|is_none }}</p>
     </div>
     <hr class="separator">
-    <form class="preconfig-form" method="post" action="{% url 'update-preconfig-order' customer.order.pk %}" onsubmit="event.preventDefault();submit_preconfig_customer(this)">
+    <form class="preconfig-form" method="post" action="{% url 'update-preconfig-order' customer.order.pk %}" onchange="event.preventDefault();submit_preconfig_customer(this)">
         {% csrf_token %}
         <input class="preconfig-message-contract-number" type="hidden" value="{{ customer.contract_number }}">
         
@@ -44,11 +44,12 @@
             </div>
         </div>
         <div class="form-field colspan-2">
-            <input class="preconfig-message-onu-serial form-input" type="text" placeholder=" " name="onu_serial" value="{{ customer.order.onu_serial|if_input_none }}" {% if not user.is_superuser %} disabled {% endif %}>
+            <input class="preconfig-message-onu form-input" type="text" value="{{ customer.order.onu|is_none }}" readonly {% if not user.is_superuser %} disabled {% endif %}>
+
             <span class="floating-label">Serial ONU</span>
         </div>
         <div class="form-field colspan-2">
-            <input class="form-input" type="text" placeholder=" " name="router_serial" value="{{ customer.order.router_serial|if_input_none }}" {% if not user.is_superuser %} disabled {% endif %}>
+            <input class="form-input" type="text" value="{{ customer.order.router|is_none }}" readonly {% if not user.is_superuser %} disabled {% endif %}>
             <span class="floating-label">Serial Router</span>
         </div>
     </form>

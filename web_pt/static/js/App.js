@@ -54,8 +54,96 @@ async function save_customer(form) {
         if (window.location.pathname == '/preconfig/') { 
             get_preconfig_customers()
         }
+        if (window.location.pathname == '/inventory/onu/') {
+            get_onu_list()
+            get_add_onu_form()
+        }
         if (form.id == 'id_delete_customer_form') add_alert_message("Se ha eliminado el cliente.")
         else add_alert_message("Cambios guardados con éxito.")
+    })
+}
+
+async function delete_onu(form) {
+    await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form)
+    })
+    .finally(() => {
+        if (window.location.pathname == '/inventory/onu/') {
+            get_onu_list()
+            get_add_onu_form()
+        }
+        if (form.id == 'id_delete_customer_form') add_alert_message("Se ha eliminado el dispositivo correctamente.")
+        else add_alert_message("Cambios guardados con éxito.")
+    })
+}
+
+async function delete_router(form) {
+    await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form)
+    })
+    .finally(() => {
+        if (window.location.pathname == '/inventory/router/') {
+            get_router_list()
+            get_add_router_form()
+        }
+        if (form.id == 'id_delete_customer_form') add_alert_message("Se ha eliminado el dispositivo correctamente.")
+        else add_alert_message("Cambios guardados con éxito.")
+    })
+}
+
+function check_serial_onu() {
+    fetch(`../update_onu/${$('#id_serial').val()}`)
+    .then(response => {
+        if (response.ok) {
+            add_error_message("Serial ONU ya registrado en la Base de Datos.")
+        }
+    })
+}
+
+function check_serial_router() {
+    fetch(`../update_router/${$('#id_serial').val()}`)
+    .then(response => {
+        if (response.ok) {
+            add_error_message("Serial Router ya registrado en la Base de Datos.")
+        }
+    })
+}
+
+async function save_onu(form) {
+    await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form)
+    })
+    .then(response => {
+        if (response.status == 500) {
+            add_error_message("Cliente no existe.")
+        }
+    })
+    .finally(() => {
+        if (window.location.pathname == '/inventory/onu/') {
+            get_onu_list()
+            get_add_onu_form()
+        }
+    })
+}
+
+async function save_router(form) {
+    await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form)
+    })
+    .then(response => {
+        if (response.status == 500) {
+            add_error_message("Cliente no existe.")
+        }
+    })
+    .finally(() => {
+        if (window.location.pathname == '/inventory/router/') {
+            get_router_list()
+            get_add_router_form()
+        }
     })
 }
 
@@ -201,7 +289,7 @@ function get_preconfig_message() {
         let category = element.querySelector('.preconfig-message-category').value;
         let plan = element.querySelector('.preconfig-message-plan').value;
         let zone = element.querySelector('.preconfig-message-zone').value;
-        let onu_serial = element.querySelector('.preconfig-message-onu-serial').value;
+        let onu_serial = element.querySelector('.preconfig-message-onu').value;
         preconfig_message+=`C${contract_number}, Zona ${zone}, ${plan}, ${onu_serial}, ${category}\n`
     });
     navigator.clipboard.writeText(preconfig_message)
@@ -223,7 +311,7 @@ function get_customer_message(customer_form) {
     let box_power = customer_form.querySelector('#id_box_power').value;
     let house_power = customer_form.querySelector('#id_house_power').value;
 
-    let onu_serial = customer_form.querySelector('#id_onu_serial').value;
+    let onu_serial = customer_form.querySelector('#id_onu').value;
 
     let drop_serial = customer_form.querySelector('#id_drop_serial').value;
     let drop_used = customer_form.querySelector('#id_drop_used').value;
@@ -239,6 +327,88 @@ function add_alert_message(message_text) {
     let message = $('<p></p>').text(message_text).addClass("success");
     setTimeout(() => {message.fadeOut()}, 4000)
     $('#id_alert_messages').append(message)
+}
+
+function add_alert_message(message_text) {
+    let message = $('<p></p>').text(message_text).addClass("success");
+    setTimeout(() => {message.fadeOut()}, 4000)
+    $('#id_alert_messages').append(message)
+}
+
+function add_error_message(message_text) {
+    let message = $('<p></p>').text(message_text).addClass("error");
+    setTimeout(() => {message.fadeOut()}, 4000)
+    $('#id_alert_messages').append(message)
+}
+
+async function get_onu_list() {
+    filters = {
+        'text_search': $('#id_text_search').val(),
+    }
+    await fetch(`../onu_list?text_search=${filters.text_search}`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_device_list').innerHTML = data
+    })
+}
+
+async function get_router_list() {
+    filters = {
+        'text_search': $('#id_text_search').val(),
+    }
+    await fetch(`../router_list?text_search=${filters.text_search}`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_device_list').innerHTML = data
+    })
+}
+
+async function get_add_onu_form() {
+    await fetch(`../add_onu`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_div_form_onu').innerHTML = data
+    })
+}
+
+async function get_add_router_form() {
+    await fetch(`../add_router`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_div_form_router').innerHTML = data
+    })
+}
+
+async function get_update_onu_form(pk) {
+    await fetch(`../update_onu/${pk}`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_div_form_onu').innerHTML = data
+    })
+}
+
+async function get_update_router_form(pk) {
+    await fetch(`../update_router/${pk}`)
+    .then(response => {
+        return response.text()
+    })
+    .then(data => {
+        document.querySelector('#id_div_form_router').innerHTML = data
+    })
+}
+
+function redirect_inventory(type) {
+    document.location = `../${type}/`
 }
 
 window.onload = () => {
@@ -278,6 +448,16 @@ window.onload = () => {
     else if (window.location.pathname == '/preconfig/') {
         get_preconfig_customers()
     }
+    else if (window.location.pathname == '/inventory/onu/') {
+        get_onu_list()
+        get_add_onu_form()
+    }
+    else if (window.location.pathname == '/inventory/router/') {
+        get_router_list()
+        get_add_router_form()
+    }
+    
+
     $('#id_alert_messages').children().each(function () { 
         setTimeout(() => {$(this).fadeOut()}, 4000)
     })

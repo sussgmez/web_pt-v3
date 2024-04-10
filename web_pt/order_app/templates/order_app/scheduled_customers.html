@@ -2,7 +2,7 @@
 
 {% for customer in customer_list %}
 
-<div class="customer">
+<div class="customer {% if customer.order.completed %}customer-completed{% endif %}">
     <form class="assign-info" method="post" action="{% url 'update-h-s-order' customer.order.pk %}" onsubmit="event.preventDefault();submit_scheduled_customer(this)">
         {% csrf_token %}
         <input type="time" name="time_assigned" class="input-assign input-assign-date" placeholder=" " id="id_time_assigned" value="{{customer.order.time_assigned|date:'H:i'}}" {% if not user.is_superuser %} disabled {% endif %}>

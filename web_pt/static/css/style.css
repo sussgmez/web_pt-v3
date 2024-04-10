@@ -818,6 +818,9 @@ input[type=number] {
 #id_schedule_page #id_technician_schedule .customer .customer-menu .customer-menu-option-danger-color {
   color: #e24b4b;
 }
+#id_schedule_page #id_technician_schedule .customer-completed {
+  border: 1px solid #14a16d;
+}
 @media (max-width: 555px) {
   #id_schedule_page #id_technician_schedule #id_technician_schedule_header {
     flex-direction: column;
@@ -1173,6 +1176,204 @@ input[type=number] {
   }
 }
 
+#id_inventory_page #id_inventory_page_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#id_inventory_page #id_inventory_page_header h1 {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+#id_inventory_page #id_inventory_page_header .selector {
+  appearance: none;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  padding: 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  height: 2.25rem;
+  padding-right: 5rem;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-search-customer {
+  width: fit-content;
+  display: flex;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.35rem;
+  border-radius: 0.25rem;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-search-customer .btn {
+  padding: 0;
+  background-color: transparent;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device, #id_inventory_page #id_device_inventory .inventory-header .form-add-device {
+  display: flex;
+  gap: 0.25rem;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs {
+  width: 100%;
+  display: flex;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .form-input-w-label, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .form-input-w-label {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  margin: -1px;
+  width: 100%;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .form-input-w-label .form-input, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .form-input-w-label .form-input {
+  background-color: transparent !important;
+  padding: 0.5rem;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .form-input-w-label .form-input:disabled, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .form-input-w-label .form-input:disabled {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+  opacity: 1;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .form-input-w-label .label, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .form-input-w-label .label {
+  background-color: rgba(0, 0, 0, 0.2);
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .device-options, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .device-options {
+  display: flex;
+  padding: 0.25rem;
+  height: 100%;
+  gap: 0.25rem;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .device-options .btn, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .device-options .btn {
+  background-color: #14a16d;
+  width: 100%;
+  border-radius: 2px;
+  padding: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .device-options .btn-update, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .device-options .btn-update {
+  background-color: #34aaff;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs .device-options .btn-delete, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs .device-options .btn-delete {
+  background-color: #e24b4b;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .input-serial-w-remove {
+  position: relative;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-update-device .input-serial-w-remove .btn-remove {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-input {
+  width: 100%;
+  appearance: none;
+  background-color: transparent;
+  font-weight: 500;
+  border: none;
+  font-size: 0.8rem;
+  padding: 0.35rem;
+}
+#id_inventory_page #id_device_inventory .inventory-header .form-input:focus {
+  outline: none;
+}
+@media (max-width: 555px) {
+  #id_inventory_page #id_device_inventory .inventory-header .form-search-customer {
+    width: 100%;
+  }
+  #id_inventory_page #id_device_inventory .inventory-header .form-update-device, #id_inventory_page #id_device_inventory .inventory-header .form-add-device {
+    flex-direction: column;
+  }
+  #id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-inputs, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-inputs {
+    flex-direction: column;
+  }
+  #id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-input-w-label, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-input-w-label {
+    border: none !important;
+    margin: 0 !important;
+  }
+  #id_inventory_page #id_device_inventory .inventory-header .form-update-device .form-input-w-label .label, #id_inventory_page #id_device_inventory .inventory-header .form-add-device .form-input-w-label .label {
+    padding: 0.5rem !important;
+  }
+  #id_inventory_page #id_device_inventory .inventory-header .device-options .btn {
+    font-size: 0.75rem !important;
+    padding: 0.4rem !important;
+  }
+}
+#id_inventory_page #id_device_inventory .device-list {
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.25rem;
+  width: 100%;
+  overflow-x: overlay;
+  max-height: 30rem;
+  min-height: 10rem;
+  overflow-y: auto;
+}
+#id_inventory_page #id_device_inventory .device-list::-webkit-scrollbar {
+  height: 0;
+  width: 0;
+}
+#id_inventory_page #id_device_inventory .device-list .device-row {
+  min-width: 600px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: -1px;
+  cursor: pointer;
+}
+#id_inventory_page #id_device_inventory .device-list .device-row .cell {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+}
+#id_inventory_page #id_device_inventory .device-list .device-row p {
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  padding: 0.45rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+#id_inventory_page #id_device_inventory .device-list .device-row:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+#id_inventory_page #id_device_inventory .device-list .device-row-header {
+  cursor: default;
+  position: sticky;
+  top: 0;
+}
+#id_inventory_page #id_device_inventory .device-list .device-row-header p {
+  padding: 0.6rem 0.45rem;
+  font-weight: 700;
+  background-color: #ededed;
+}
+#id_inventory_page #id_device_inventory .device-list .device-list-empty {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+#id_inventory_page #id_device_inventory .device-list .device-list-empty p {
+  padding: 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+#id_inventory_page #id_device_inventory .device-list .completed {
+  background-color: rgba(20, 161, 109, 0.2);
+}
+#id_inventory_page #id_device_inventory .device-list .completed:hover {
+  background-color: rgba(20, 161, 109, 0.1);
+}
+#id_inventory_page #id_device_inventory .separator {
+  display: block;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.4);
+}
+
 #id_footer {
   height: 3rem;
   background-color: #000;
@@ -1442,43 +1643,43 @@ input[type=number] {
   left: 0.2rem;
 }
 
-#id_delete_customer form {
+#id_delete_customer form, #id_delete_onu form, #id_delete_router form {
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
 }
-#id_delete_customer form .form-fields {
+#id_delete_customer form .form-fields, #id_delete_onu form .form-fields, #id_delete_router form .form-fields {
   display: flex;
   flex-direction: column;
   overflow: auto;
   padding: 2.5rem;
   gap: 0;
 }
-#id_delete_customer form .form-fields h1 {
+#id_delete_customer form .form-fields h1, #id_delete_onu form .form-fields h1, #id_delete_router form .form-fields h1 {
   font-size: 1.05rem;
   margin-bottom: 0.75rem;
 }
-#id_delete_customer form .form-fields p {
+#id_delete_customer form .form-fields p, #id_delete_onu form .form-fields p, #id_delete_router form .form-fields p {
   font-size: 0.9rem;
   margin-bottom: 1.5rem;
 }
-#id_delete_customer form .form-fields .form-btns {
+#id_delete_customer form .form-fields .form-btns, #id_delete_onu form .form-fields .form-btns, #id_delete_router form .form-fields .form-btns {
   flex-direction: row !important;
   margin-left: auto;
 }
-#id_delete_customer form .form-fields .form-btns .btn {
+#id_delete_customer form .form-fields .form-btns .btn, #id_delete_onu form .form-fields .form-btns .btn, #id_delete_router form .form-fields .form-btns .btn {
   width: fit-content;
 }
-#id_delete_customer form .form-fields .form-btns .btn-alt {
+#id_delete_customer form .form-fields .form-btns .btn-alt, #id_delete_onu form .form-fields .form-btns .btn-alt, #id_delete_router form .form-fields .form-btns .btn-alt {
   font-weight: 600;
   background-color: #fff;
   color: rgba(0, 0, 0, 0.6);
   box-shadow: unset;
 }
-#id_delete_customer form .form-fields .form-btns .btn-alt:hover {
+#id_delete_customer form .form-fields .form-btns .btn-alt:hover, #id_delete_onu form .form-fields .form-btns .btn-alt:hover, #id_delete_router form .form-fields .form-btns .btn-alt:hover {
   background-color: #fff !important;
 }
 @media (max-width: 380px) {
-  #id_delete_customer form .form-fields {
+  #id_delete_customer form .form-fields, #id_delete_onu form .form-fields, #id_delete_router form .form-fields {
     padding: 1.5rem;
   }
 }

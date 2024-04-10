@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from django.views.generic import RedirectView
-from order_app.views import HomeView, CustomerCreateView, CustomerListView, CustomerUpdateView, OrderUpdateView, CustomerDeleteView, Schedule, ScheduledCustomers, CustomersToAssign, OrderAssignUpdate, OrderHSUpdateView, Preconfig, PreconfigCustomers, OrderPreconfigUpdateView, import_xlsx, export_xlsx
+from order_app.views import HomeView, CustomerCreateView, CustomerListView, CustomerUpdateView, OrderUpdateView, CustomerDeleteView, Schedule, ScheduledCustomers, CustomersToAssign, OrderAssignUpdate, OrderHSUpdateView, Preconfig, PreconfigCustomers, OrderPreconfigUpdateView, InventoryOnuPage, OnuCreateView, OnuUpdateView, OnuDeleteView,  OnuListView, InventoryRouterPage, RouterCreateView, RouterUpdateView, RouterDeleteView, RouterListView,  import_xlsx, export_xlsx
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,9 +23,21 @@ urlpatterns = [
     path('update_h_s_order/<int:pk>', login_required(OrderHSUpdateView.as_view()), name='update-h-s-order'),
     path('customers_to_assign/', login_required(CustomersToAssign.as_view()), name='customers-to-assign'),
     path('update_assign_order/<int:pk>', login_required(OrderAssignUpdate.as_view()), name='update-assign-order'),
-    # Preconfi
+    # Preconfig
     path('preconfig/', login_required(Preconfig.as_view()), name='preconfig'),
     path('preconfig_customers/', login_required(PreconfigCustomers.as_view()), name='preconfig-customers'),
     path('update_preconfig_order/<int:pk>', login_required(OrderPreconfigUpdateView.as_view()), name='update-preconfig-order'),
+    # Inventory ONU
+    path('inventory/onu/', login_required(InventoryOnuPage.as_view()), name='inventory-onu'),
+    path('inventory/add_onu/', login_required(OnuCreateView.as_view()), name='add-onu'),
+    path('inventory/update_onu/<slug:pk>', login_required(OnuUpdateView.as_view()), name='update-onu'),
+    path('inventory/delete_onu/<slug:pk>', login_required(OnuDeleteView.as_view()), name='delete-onu'),
+    path('inventory/onu_list/', login_required(OnuListView.as_view()), name='onu-list'),
+    # Inventory Router
+    path('inventory/router/', login_required(InventoryRouterPage.as_view()), name='inventory-router'),
+    path('inventory/add_router/', login_required(RouterCreateView.as_view()), name='add-router'),
+    path('inventory/update_router/<slug:pk>', login_required(RouterUpdateView.as_view()), name='update-router'),
+    path('inventory/delete_router/<slug:pk>', login_required(RouterDeleteView.as_view()), name='delete-router'),
+    path('inventory/router_list/', login_required(RouterListView.as_view()), name='router-list'),
     
 ]

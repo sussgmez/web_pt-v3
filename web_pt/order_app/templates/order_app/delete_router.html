@@ -1,0 +1,11 @@
+<form class="router-form" id="id_delete_router_form" method="post" action="{% url 'delete-router' router.serial %}" onsubmit="event.preventDefault();delete_router(this); $('#id_delete_router').hide()">
+    {% csrf_token %}
+    <div class="form-fields">
+        <h1>¿Está seguro que desea eliminar {{ router.serial }}?</h1>
+        <p>Se perderá toda la información referente a este dispositivo.</p>
+        <div class="form-btns">
+            <button class="btn btn-alt" onclick="event.preventDefault(); $('#id_delete_router').hide();">Cancelar</button>
+            <button class="btn btn-cancel">Eliminar</button>
+        </div>
+    </div>
+</form>

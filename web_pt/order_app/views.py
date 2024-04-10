@@ -6,8 +6,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import TemplateView, CreateView, ListView, UpdateView, DeleteView
-from .models import Customer, Order, Technician
-from .forms import CustomerForm, OrderForm, HSOrderForm, OrderAssignUpdateForm, OrderPreconfigUpdateForm
+from .models import Customer, Order, Technician, Onu, Router
+from .forms import CustomerForm, OrderForm, HSOrderForm, OrderAssignUpdateForm, OrderPreconfigUpdateForm, OnuForm, OnuUpdateForm, RouterForm, RouterUpdateForm
 
 
 # Home
@@ -87,13 +87,23 @@ class OrderUpdateView(UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
+        kwargs['technician_id'] = ""
         if not self.request.user.has_perm('order_app.change_order'):
             kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned', 'onu_serial', 'router_serial', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
         if not self.request.user.is_staff:
-             kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned']
+            kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned']
+
+        try: 
+            kwargs['technician_id'] = self.request.user.technician.pk
+        except: pass 
         
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["onus"] = Onu.objects.filter(order__completed=False) | Onu.objects.filter(order=None)
+        return context
+    
 # Schedule
 class Schedule(TemplateView):
     template_name = "order_app/schedule.html"
@@ -173,6 +183,90 @@ class OrderPreconfigUpdateView(UpdateView):
     form_class = OrderPreconfigUpdateForm
 
     def get_success_url(self): return reverse('preconfig')
+
+# Inventory ONU
+class InventoryOnuPage(TemplateView):
+    template_name = "order_app/inventory_onu.html"
+
+class OnuCreateView(CreateView):
+    model = Onu
+    form_class = OnuForm
+    template_name = "order_app/add_onu.html"
+
+    def get_success_url(self): 
+        messages.success(self.request, "Se ha añadido el serial correctamente.")
+        return reverse('inventory-onu')
+    
+class OnuUpdateView(UpdateView):
+    model = Onu
+    form_class = OnuUpdateForm
+    template_name = "order_app/update_onu.html"
+
+    def get_success_url(self): 
+        messages.success(self.request, "Se ha modificado el serial correctamente.")
+        return reverse('inventory-onu')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["orders"] = Order.objects.filter(completed=False)
+        return context
+    
+class OnuDeleteView(DeleteView):
+    model = Onu
+    template_name = "order_app/delete_onu.html"
+    
+    def get_success_url(self): return reverse('home')
+
+class OnuListView(ListView):
+    model = Onu
+    template_name = "order_app/onu_list.html"
+
+    def get_queryset(self):
+        text_search = self.request.GET['text_search']
+        onus = Onu.objects.filter(serial__contains=text_search) | Onu.objects.filter(order__customer__pk__contains=text_search) | Onu.objects.filter(technician__user__first_name__contains=text_search)
+        return onus.order_by('-date_updated')
+
+# Inventory Router
+class InventoryRouterPage(TemplateView):
+    template_name = "order_app/inventory_router.html"
+
+class RouterCreateView(CreateView):
+    model = Router
+    form_class = RouterForm
+    template_name = "order_app/add_router.html"
+
+    def get_success_url(self): 
+        messages.success(self.request, "Se ha añadido el serial correctamente.")
+        return reverse('inventory-router')
+    
+class RouterUpdateView(UpdateView):
+    model = Router
+    form_class = RouterUpdateForm
+    template_name = "order_app/update_router.html"
+
+    def get_success_url(self): 
+        messages.success(self.request, "Se ha modificado el serial correctamente.")
+        return reverse('inventory-router')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["orders"] = Order.objects.filter(completed=False)
+        return context
+    
+class RouterDeleteView(DeleteView):
+    model = Router
+    template_name = "order_app/delete_router.html"
+    
+    def get_success_url(self): return reverse('home')
+
+class RouterListView(ListView):
+    model = Router
+    template_name = "order_app/router_list.html"
+
+    def get_queryset(self):
+        text_search = self.request.GET['text_search']
+        routers = Router.objects.filter(serial__contains=text_search) | Router.objects.filter(order__customer__pk__contains=text_search) | Router.objects.filter(technician__user__first_name__contains=text_search)
+        return routers.order_by('-date_updated')
 
 # Others
 def import_xlsx(request):

@@ -2,7 +2,7 @@ import datetime
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 from django.contrib.auth.models import User
 
 
@@ -75,6 +75,32 @@ class Customer(models.Model):
         return 'C{} - {}'.format(self.contract_number, self.customer_name)
 
 
+class Onu(models.Model):
+    serial = models.CharField(_("Serial"), max_length=25, primary_key=True)
+    technician = models.ForeignKey(Technician, verbose_name=_("Técnico"), on_delete=models.SET_NULL, blank=True, null=True)
+    
+    date_created = models.DateTimeField(_("Fecha De Creación"), auto_now=False, auto_now_add=True)
+    date_updated = models.DateTimeField(_("Última Modificación"), auto_now=True, auto_now_add=False)
+    class Meta:
+        verbose_name = _("onu")
+        verbose_name_plural = _("onus")
+    def __str__(self):
+        return str(self.pk)
+
+
+class Router(models.Model):
+    serial = models.CharField(_("Serial"), max_length=25, primary_key=True)   
+    technician = models.ForeignKey(Technician, verbose_name=_("Técnico"), on_delete=models.SET_NULL, blank=True, null=True)
+    
+    date_created = models.DateTimeField(_("Fecha De Creación"), auto_now=False, auto_now_add=True)
+    date_updated = models.DateTimeField(_("Última Modificación"), auto_now=True, auto_now_add=False)
+    class Meta:
+        verbose_name = _("router")
+        verbose_name_plural = _("routers")
+    def __str__(self):
+        return self.serial
+
+
 class Order(models.Model):
     CUSTOMER_CONFIRMATION_OPTIONS = [
         (0, 'No citado'),
@@ -86,6 +112,9 @@ class Order(models.Model):
     date_assigned = models.DateField(_("Fecha a realizar"), blank=True, null=True)
     time_assigned = models.TimeField(_("Hora a realizar"), blank=True, null=True)
 
+    onu = models.OneToOneField(Onu, verbose_name=_("Onu"), on_delete=models.SET_NULL, blank=True, null=True)
+    router = models.OneToOneField(Router, verbose_name=_("Router"), on_delete=models.SET_NULL, blank=True, null=True)
+
     completed = models.BooleanField(_("Completada"), default=False)
     
     zone = models.IntegerField(_("Zona"), blank=True, null=True)
@@ -96,8 +125,7 @@ class Order(models.Model):
     port = models.IntegerField(_("Puerto"), blank=True, null=True)
     box_power = models.FloatField(_("Potencia Caja"), blank=True, null=True)
     house_power = models.FloatField(_("Potencia Roseta"), blank=True, null=True)
-    onu_serial = models.CharField(_("Serial ONU"), max_length=32, blank=True, null=True)
-    router_serial = models.CharField(_("Serial Router"), max_length=32, blank=True, null=True)
+    
     drop_serial = models.IntegerField(_("Serial DROP"), blank=True, null=True)
     drop_used = models.IntegerField(_("DROP"), blank=True, null=True)
     hook_used = models.IntegerField(_("Tensores"), default=0, blank=True, null=True)
@@ -127,3 +155,10 @@ def order_post_save_receiver(sender, instance, **kwargs):
         instance.save()
 
 
+
+# @receiver(pre_save, sender=Order)
+# def order_pre_save_receiver(sender, instance, **kwargs):
+#     orders = Order.objects.filter(onu_serial=instance.onu_serial).exclude(pk=instance.pk).exclude(onu_serial=None)
+#     for order in orders:
+#         order.onu_serial = None
+#         order.save()

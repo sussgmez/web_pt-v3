@@ -100,8 +100,10 @@
     <button class="btn-pagination" onclick="get_customer_list({{page_obj.previous_page_number}})">{{page_obj.previous_page_number}}</button>
     {% endif %}
     
+    {% if not page_obj.paginator.num_pages == 1 %}    
     <button class="btn-pagination current">{{ page_obj.number }}</button>
-
+    {% endif %}
+    
     {% if page_obj.has_next %}
     <button class="btn-pagination" onclick="get_customer_list({{page_obj.next_page_number}})">{{page_obj.next_page_number}}</button>
         {% if not page_obj.next_page_number == page_obj.paginator.num_pages %}

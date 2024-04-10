@@ -2,6 +2,8 @@
 
 {% load static %}
 
+{% block title %}Iniciar Sesión{% endblock title %}
+
 {% block content %}
 {% if not user.is_authenticated %}
 <div class="page-login">

@@ -1,5 +1,6 @@
+from typing import Any
 from django import forms
-from .models import Customer, Order
+from .models import Customer, Order, Onu, Router
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -31,13 +32,13 @@ class CustomerForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['technician', 'date_assigned', 'time_assigned', 'onu_serial', 'router_serial', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
+        fields = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
         widgets = {
             'technician':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
             'date_assigned':forms.DateInput(format='%Y-%m-%d', attrs={'type':'date','class':'form-input only-superuser', 'placeholder':' '}),
             'time_assigned':forms.TimeInput(attrs={'type':'time', 'class':'form-input only-superuser', 'placeholder':' '}),
-            'onu_serial':forms.TextInput(attrs={'class':'form-input', 'placeholder':' '}),
-            'router_serial':forms.TextInput(attrs={'class':'form-input', 'placeholder':' '}),
+            'onu':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
+            'router':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
             'zone':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
             'olt':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
             'card':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
@@ -54,15 +55,157 @@ class OrderForm(forms.ModelForm):
             'fast_conn_used':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
 
             'completed': forms.HiddenInput()
-        }
-    
+        }    
+
     def __init__(self, *args, **kwargs):
         disabled_fields = kwargs.pop('disabled_fields', None)
+        technician_id = kwargs.pop('technician_id', None)
+        
         super(OrderForm, self).__init__(*args, **kwargs)
         if disabled_fields != None:
             for field in disabled_fields:
                 self.fields[field].widget.attrs['disabled'] = True
-            
+
+        if technician_id != "": self.fields['onu'].queryset = Onu.objects.filter(technician=technician_id).filter(order__completed=False) | Onu.objects.filter(technician=technician_id).filter(order=None) | Onu.objects.filter(order=self.instance)
+        else: self.fields['onu'].queryset = Onu.objects.filter(order__completed=False) | Onu.objects.filter(order=None) | Onu.objects.filter(order=self.instance)
+
+        
+    def clean_onu(self):
+        data = self.cleaned_data["onu"]
+        if data != None:
+            try:
+                aux_order = Order.objects.get(onu=data)
+                aux_order.onu = None
+                aux_order.save()
+            except: pass
+        return data
+    
+    def clean_router(self):
+        data = self.cleaned_data["router"]
+        if data != None:
+            try:
+                aux_order = Order.objects.get(router=data)
+                aux_order.router = None
+                aux_order.save()
+            except: pass
+        return data
+
+class OnuForm(forms.ModelForm):
+    
+    class Meta:
+        model = Onu
+        fields = ("serial", 'technician')
+        widgets = {
+            'serial':forms.TextInput(attrs={'class':'form-input'}),
+            'technician':forms.Select(attrs={'class':'form-input', 'disabled':True}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(OnuForm, self).__init__(*args, **kwargs)
+        self.fields['order'] = forms.Field()
+        self.fields['order'].widget.attrs = {'class':'form-input', 'disabled':True}
+        self.fields['order'].required = False
+        
+class OnuUpdateForm(forms.ModelForm):
+    
+    class Meta:
+        model = Onu
+        fields = ('serial', 'technician', )
+        widgets = {
+            'serial':forms.TextInput(attrs={'class':'form-input', 'readonly':True}),
+            'technician':forms.Select(attrs={'class':'form-input'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(OnuUpdateForm, self).__init__(*args, **kwargs)
+        
+        self.fields['order'] = forms.Field()
+        self.fields['order'].widget.attrs = {'class':'form-input', 'list':'order_list'}
+        self.fields['order'].required = False   
+
+        try: 
+            self.fields['order'].widget.attrs['value'] = self.instance.order.customer.pk
+        except: pass
+
+    def clean_order(self):
+        contract_number = self.cleaned_data["order"]
+
+        if contract_number != "":
+            order =  Order.objects.get(customer__pk = contract_number) 
+            if order != None:
+                try: 
+                    aux_order = Order.objects.get(onu=self.instance)
+                    aux_order.onu = None
+                    aux_order.save()
+                except: pass
+                order.onu = self.instance
+                order.save()
+        else: 
+            try: 
+                order =  Order.objects.get(onu = self.instance) 
+                order.onu = None
+                order.save()                
+            except Exception as e: print(e)
+        return contract_number
+
+class RouterForm(forms.ModelForm):
+    
+    class Meta:
+        model = Router
+        fields = ("serial", 'technician')
+        widgets = {
+            'serial':forms.TextInput(attrs={'class':'form-input'}),
+            'technician':forms.Select(attrs={'class':'form-input', 'disabled':True}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(RouterForm, self).__init__(*args, **kwargs)
+        self.fields['order'] = forms.Field()
+        self.fields['order'].widget.attrs = {'class':'form-input', 'disabled':True}
+        self.fields['order'].required = False
+        
+class RouterUpdateForm(forms.ModelForm):
+    
+    class Meta:
+        model = Router
+        fields = ('serial', 'technician', )
+        widgets = {
+            'serial':forms.TextInput(attrs={'class':'form-input', 'readonly':True}),
+            'technician':forms.Select(attrs={'class':'form-input'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(RouterUpdateForm, self).__init__(*args, **kwargs)
+        
+        self.fields['order'] = forms.Field()
+        self.fields['order'].widget.attrs = {'class':'form-input', 'list':'order_list'}
+        self.fields['order'].required = False   
+
+        try: 
+            self.fields['order'].widget.attrs['value'] = self.instance.order.customer.pk
+        except: pass
+
+    def clean_order(self):
+        contract_number = self.cleaned_data["order"]
+
+        if contract_number != "":
+            order =  Order.objects.get(customer__pk = contract_number) 
+            if order != None:
+                try: 
+                    aux_order = Order.objects.get(router=self.instance)
+                    aux_order.router = None
+                    aux_order.save()
+                except: pass
+                order.router = self.instance
+                order.save()
+        else: 
+            try: 
+                order =  Order.objects.get(router = self.instance) 
+                order.router = None
+                order.save()                
+            except Exception as e: print(e)
+        return contract_number
+
 class HSOrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -76,4 +219,4 @@ class OrderAssignUpdateForm(forms.ModelForm):
 class OrderPreconfigUpdateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['onu_serial', 'router_serial', 'zone', 'olt', 'card', 'pon', 'box']
+        fields = ['zone', 'olt', 'card', 'pon', 'box']

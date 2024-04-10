@@ -1,0 +1,11 @@
+<form class="onu-form" id="id_delete_onu_form" method="post" action="{% url 'delete-onu' onu.serial %}" onsubmit="event.preventDefault();delete_onu(this); $('#id_delete_onu').hide()">
+    {% csrf_token %}
+    <div class="form-fields">
+        <h1>¿Está seguro que desea eliminar {{ onu.serial }}?</h1>
+        <p>Se perderá toda la información referente a este dispositivo.</p>
+        <div class="form-btns">
+            <button class="btn btn-alt" onclick="event.preventDefault(); $('#id_delete_onu').hide();">Cancelar</button>
+            <button class="btn btn-cancel">Eliminar</button>
+        </div>
+    </div>
+</form>

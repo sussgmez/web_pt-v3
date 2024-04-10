@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Order, Customer, Technician
+from .models import Order, Customer, Technician, Onu, Router
 
 # Register your models here.
 @admin.register(Technician)
@@ -12,4 +12,12 @@ class CustomerAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Onu)
+class OnuAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(Router)
+class RouterAdmin(admin.ModelAdmin):
     pass
