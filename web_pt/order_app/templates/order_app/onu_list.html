@@ -6,7 +6,7 @@
     <p class="cell">Última modificación</p>
 </div>
 {% for onu in onu_list %}
-<div class="device-row {% if onu.order.completed %}completed{% endif %}" onclick="get_update_onu_form('{{ onu.pk }}')">
+<div class="device-row {% if onu.order.completed %}completed{% endif %}" {% if user.is_superuser %}onclick="get_update_onu_form('{{ onu.pk }}')"{% endif %}>
     <p class="cell">{{ onu.serial }}</p>
     <p class="cell">{{ onu.order.customer.pk|is_none }}</p>
     <p class="cell">{{ onu.technician|is_none }}</p>

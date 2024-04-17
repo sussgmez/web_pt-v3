@@ -1356,6 +1356,7 @@ input[type=number] {
   background-color: #ededed;
 }
 #id_inventory_page #id_device_inventory .device-list .device-list-empty {
+  min-width: 600px;
   background-color: rgba(0, 0, 0, 0.04);
 }
 #id_inventory_page #id_device_inventory .device-list .device-list-empty p {

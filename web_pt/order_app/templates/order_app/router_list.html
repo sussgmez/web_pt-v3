@@ -6,7 +6,7 @@
     <p class="cell">Última modificación</p>
 </div>
 {% for router in router_list %}
-<div class="device-row {% if router.order.completed %}completed{% endif %}" onclick="get_update_router_form('{{ router.pk }}')">
+<div class="device-row {% if router.order.completed %}completed{% endif %}" {% if user.is_superuser %}onclick="get_update_router_form('{{ router.pk }}')"{% endif %}>
     <p class="cell">{{ router.serial }}</p>
     <p class="cell">{{ router.order.customer.pk|is_none }}</p>
     <p class="cell">{{ router.technician|is_none }}</p>

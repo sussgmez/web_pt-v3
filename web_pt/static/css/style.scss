@@ -1393,6 +1393,7 @@ input[type=number] {appearance: textfield;}
                 }
             }
             .device-list-empty {
+                min-width: 600px;
                 background-color: $black-04;
                 p { 
                     padding: 0.65rem;

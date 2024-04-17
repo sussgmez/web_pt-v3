@@ -89,7 +89,7 @@ class OrderUpdateView(UpdateView):
         kwargs = super().get_form_kwargs()
         kwargs['technician_id'] = ""
         if not self.request.user.has_perm('order_app.change_order'):
-            kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned', 'onu_serial', 'router_serial', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
+            kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
         if not self.request.user.is_staff:
             kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned']
 
@@ -142,7 +142,7 @@ class CustomersToAssign(ListView):
         text_search = self.request.GET['text_search']
         customers = Customer.objects.filter(contract_number__contains=text_search) | Customer.objects.filter(customer_name__contains=text_search) | Customer.objects.filter(address__contains=text_search)
         
-        return customers.filter(order__technician=None).filter(order__completed=False)
+        return customers.filter(order__technician=None).filter(order__completed=False).order_by('date_received')
     
 class OrderHSUpdateView(UpdateView):
     model = Order
@@ -272,7 +272,9 @@ class RouterListView(ListView):
 def import_xlsx(request):
     if request.POST:
         df = pandas.read_excel(request.FILES['excel_file'])
-        df.columns = ['contract_number', 'customer_name', 'type', 'seller', 'na1', 'phone_1', 'phone_2', 'address', 'email', 'plan', 'assigned_company', 'comment']
+        try: 
+            df.columns = ['contract_number', 'customer_name', 'type', 'seller', 'na1', 'phone_1', 'phone_2', 'address', 'email', 'plan', 'assigned_company', 'comment']
+        except: pass
 
         df = df.fillna('')
     
@@ -390,8 +392,8 @@ def export_xlsx(request):
             customer.order.hook_used,
             customer.order.drop_used,
             customer.order.drop_serial,
-            customer.order.onu_serial,
-            customer.order.router_serial,
+            customer.order.onu.serial if customer.order.onu != None else "",
+            customer.order.router.serial if customer.order.router != None else "",
             customer.order.technician,
         ]])  
         df = pandas.concat([df, df_aux])
