@@ -32,7 +32,7 @@ class CustomerForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
+        fields = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed', 'not_assign']
         widgets = {
             'technician':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
             'date_assigned':forms.DateInput(format='%Y-%m-%d', attrs={'type':'date','class':'form-input only-superuser', 'placeholder':' '}),
@@ -54,7 +54,8 @@ class OrderForm(forms.ModelForm):
             'hook_used':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
             'fast_conn_used':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
 
-            'completed': forms.HiddenInput()
+            'completed': forms.HiddenInput(),
+            'not_assign': forms.HiddenInput(),
         }    
 
     def __init__(self, *args, **kwargs):

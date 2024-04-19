@@ -59,9 +59,6 @@ input[type=number] {appearance: textfield;}
 }
 .btn-alt {
     background-color: $secondary-color;
-    &:hover {
-        background-color: rgba($color: $secondary-color, $alpha: 0.8) !important;
-    }
 }
 .btn-success {
     background-color: $success-color;
@@ -521,6 +518,10 @@ input[type=number] {appearance: textfield;}
             .to-assign-status {
                 color: $info-color;
                 background-color: rgba($color: $info-color, $alpha: 0.1);
+            }
+            .not-assign-status {
+                color: $danger-color;
+                background-color: rgba($color: $danger-color, $alpha: 0.1);
             }
             .assigned-status {
                 color: $warning-color;
@@ -1525,24 +1526,43 @@ input[type=number] {appearance: textfield;}
         }
     }
     .form-btns {
-        display: flex;
         flex-wrap: wrap;
-        gap: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        gap: 0.25rem;
         grid-column: 1/-1;
         .btn {
-            border-radius: 0.25rem;
+            padding: 0.55rem 1rem;
+            flex: 1;
+            text-wrap: nowrap;
+            background-color: $info-color;
+            color: $white;
             font-weight: 500;
-            padding: 0.55rem 2rem;
-            box-shadow: -2px 2px 2px $black-1;
+            border-radius: 2px;
             &:hover {
-                background-color: rgba($color: $primary-color, $alpha: 0.8);
+                background-color:  rgba($color: $info-color, $alpha: 0.8);
             }
         }
-        .btn-success:hover {
-            background-color: rgba($color: $success-color, $alpha: 0.8);
+        .btn-cancel {
+            background-color: $danger-color;
+            color: $white;
+            &:hover {
+                background-color:  rgba($color: $danger-color, $alpha: 0.8);
+            }
         }
-        .btn-cancel:hover {
-            background-color: rgba($color: $danger-color, $alpha: 0.8);
+        .btn-success {
+            background-color: $success-color;
+            color: $white;
+            &:hover {
+                background-color:  rgba($color: $success-color, $alpha: 0.8);
+            }
+        }
+        .btn-alt {
+            background-color: $secondary-color;
+            color: $white;
+            &:hover {
+                background-color:  rgba($color: $secondary-color, $alpha: 0.8);
+            }
         }
     }
     .form-field {

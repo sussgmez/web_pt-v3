@@ -21,21 +21,21 @@
         </div>
         <div class="form-field colspan-2">
             {{ form.technician }}
-            {% if not user.is_staff %}
-                <input type="hidden" name="technician" value="{{ form.technician.value }}">
+            {% if not user.is_staff or form.instance.not_assign %}
+                <input type="hidden" name="technician" value="{{ form.instance.technician.value }}">
             {% endif %}
             <span class="floating-label">Técnico</span>
         </div>
         <div class="form-field">
             {{ form.date_assigned }}
-            {% if not user.is_staff %}
+            {% if not user.is_staff or form.instance.not_assign %}
                 <input type="hidden" name="date_assigned" value="{{ form.date_assigned.value|date:'Y-m-d' }}">
             {% endif %}
             <span class="floating-label">Fecha asignada</span>
         </div>
         <div class="form-field">
             {{ form.time_assigned }}
-            {% if not user.is_staff %}
+            {% if not user.is_staff or form.instance.not_assign %}
                 <input type="hidden" name="time_assigned" value="{{ form.time_assigned.value|date:'H:i:s' }}">
             {% endif %}
             <span class="floating-label">Hora asignada</span>
@@ -104,6 +104,7 @@
         </div>
 
         {{ form.completed }}
+        {{ form.not_assign }}
 
         <div class="form-btns">
             {% if perms.order_app.change_order %}
@@ -112,10 +113,19 @@
                     {% if not form.instance.completed %}
                     <button class="btn btn-success" onclick="$('#id_completed').attr('value','True');$('#id_assign_installation_form').hide()">Finalizar</button>
                     {% else %}
-                    <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False');$('#id_assign_installation_form').hide()">Cancelar</button>
-                    {% endif %}            
+                    <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False');$('#id_assign_installation_form').hide()">Sin finalizar</button>
+                    {% endif %}  
+
+                    {% if not form.instance.not_assign %}
+                    <button class="btn btn-cancel" onclick="$('#id_not_assign').attr('value','True');$('#id_technician').val('0');$('#id_date_assigned').val('');$('#id_time_assigned').val('');$('#id_assign_installation_form').hide()">No asignar</button>
+                    {% else %}
+                    <button class="btn btn-success" onclick="$('#id_not_assign').attr('value','False');$('#id_assign_installation_form').hide()">Permitir asignación</button>
+                    {% endif %}   
+                        
                 {% endif %}
+
             {% endif %}
+            
             <button class="btn btn-alt" onclick="event.preventDefault();get_form(`{% url 'update-customer' form.instance.customer.contract_number %}`, 'id_update_customer_form').finally(() => {$('#id_contract_number').attr('readonly', true)}); $('#id_assign_installation_form').hide()">Ver Cliente</button>
         </div>
     </div>

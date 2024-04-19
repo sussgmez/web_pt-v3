@@ -61,7 +61,7 @@ class CustomerListView(ListView):
         if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False)
         elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False)
         elif (status_search == 'or-completed'): customers = customers.filter(order__completed=True)
-        
+        elif (status_search == 'or-not-assign'): customers = customers.filter(order__not_assign=True).filter(order__completed=False)
         
         technician_search = self.request.GET['technician_search']
         if technician_search != "--": customers = customers.filter(order__technician=technician_search)
@@ -90,9 +90,8 @@ class OrderUpdateView(UpdateView):
         kwargs['technician_id'] = ""
         if not self.request.user.has_perm('order_app.change_order'):
             kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed']
-        if not self.request.user.is_staff:
+        if not self.request.user.is_staff or self.get_object().not_assign:
             kwargs['disabled_fields'] = ['technician', 'date_assigned', 'time_assigned']
-
         try: 
             kwargs['technician_id'] = self.request.user.technician.pk
         except: pass 
@@ -142,7 +141,7 @@ class CustomersToAssign(ListView):
         text_search = self.request.GET['text_search']
         customers = Customer.objects.filter(contract_number__contains=text_search) | Customer.objects.filter(customer_name__contains=text_search) | Customer.objects.filter(address__contains=text_search)
         
-        return customers.filter(order__technician=None).filter(order__completed=False).order_by('date_received')
+        return customers.filter(order__technician=None).filter(order__completed=False).filter(order__not_assign=False).order_by('date_received')
     
 class OrderHSUpdateView(UpdateView):
     model = Order

@@ -117,6 +117,8 @@ class Order(models.Model):
 
     completed = models.BooleanField(_("Completada"), default=False)
     
+    not_assign = models.BooleanField(_("No asignar"), default=False)
+    
     zone = models.IntegerField(_("Zona"), blank=True, null=True)
     olt = models.IntegerField(_("OLT"), blank=True, null=True)
     pon = models.IntegerField(_("PON"), blank=True, null=True)

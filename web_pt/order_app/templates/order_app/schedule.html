@@ -32,8 +32,8 @@
             <div id="id_technician_schedule_header">
                 <div class="schedule-selectors">
                     <div class="selector-w-label">
-                        <label class="label">Técnico</label>
-                        <select class="selector" id="id_technician" onchange="get_schedule()">
+                        <label class="label" for="id_filter_technician">Técnico</label>
+                        <select class="selector" id="id_filter_technician" onchange="get_schedule()">
                             {% for technician in technicians %}
                             <option value="{{ technician.pk }}">{{ technician.user.get_full_name }}</option>  
                             {% endfor %}

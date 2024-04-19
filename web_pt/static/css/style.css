@@ -52,9 +52,6 @@ input[type=number] {
 .btn-alt {
   background-color: #031630;
 }
-.btn-alt:hover {
-  background-color: rgba(3, 22, 48, 0.8) !important;
-}
 
 .btn-success {
   background-color: #14a16d;
@@ -522,6 +519,10 @@ input[type=number] {
 #id_customers_page #id_customer_list .customer .to-assign-status {
   color: #34aaff;
   background-color: rgba(52, 170, 255, 0.1);
+}
+#id_customers_page #id_customer_list .customer .not-assign-status {
+  color: #e24b4b;
+  background-color: rgba(226, 75, 75, 0.1);
 }
 #id_customers_page #id_customer_list .customer .assigned-status {
   color: #f3ad2b;
@@ -1479,25 +1480,44 @@ input[type=number] {
   background-color: rgba(0, 0, 0, 0.6);
 }
 .generic-form-1 form .form-btns {
-  display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
   grid-column: 1/-1;
 }
 .generic-form-1 form .form-btns .btn {
-  border-radius: 0.25rem;
+  padding: 0.55rem 1rem;
+  flex: 1;
+  text-wrap: nowrap;
+  background-color: #34aaff;
+  color: #fff;
   font-weight: 500;
-  padding: 0.55rem 2rem;
-  box-shadow: -2px 2px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
 }
 .generic-form-1 form .form-btns .btn:hover {
-  background-color: rgba(20, 116, 251, 0.8);
+  background-color: rgba(52, 170, 255, 0.8);
+}
+.generic-form-1 form .form-btns .btn-cancel {
+  background-color: #e24b4b;
+  color: #fff;
+}
+.generic-form-1 form .form-btns .btn-cancel:hover {
+  background-color: rgba(226, 75, 75, 0.8);
+}
+.generic-form-1 form .form-btns .btn-success {
+  background-color: #14a16d;
+  color: #fff;
 }
 .generic-form-1 form .form-btns .btn-success:hover {
   background-color: rgba(20, 161, 109, 0.8);
 }
-.generic-form-1 form .form-btns .btn-cancel:hover {
-  background-color: rgba(226, 75, 75, 0.8);
+.generic-form-1 form .form-btns .btn-alt {
+  background-color: #031630;
+  color: #fff;
+}
+.generic-form-1 form .form-btns .btn-alt:hover {
+  background-color: rgba(3, 22, 48, 0.8);
 }
 .generic-form-1 form .form-field {
   position: relative;

@@ -162,12 +162,12 @@ async function assign_order(form) {
 
 async function get_customer_list(num_page = 1) {
     filters = {
-        'text_search': $('#id_search_text').val(),
-        'status_search': $('#id_installation_status').val(),
-        'min_date': $('#id_from_date').val(),
-        'max_date': $('#id_to_date').val(),
-        'technician_search': $('#id_technician').val(),
-        'order_by': $('#id_order_by_input').val(),
+        'text_search': $('#id_filter_search_text').val(),
+        'status_search': $('#id_filter_installation_status').val(),
+        'min_date': $('#id_filter_from_date').val(),
+        'max_date': $('#id_filter_to_date').val(),
+        'technician_search': $('#id_filter_technician').val(),
+        'order_by': $('#id_filter_order_by_input').val(),
     }
     await fetch(`../customer_list?page=${num_page}&text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&technician_search=${filters.technician_search}&status_search=${filters.status_search}&order_by=${filters.order_by}`)
     .then(response => {
@@ -185,7 +185,7 @@ async function get_customer_list(num_page = 1) {
 
 async function get_schedule() {
     filters = {
-        'technician': $('#id_technician').val(),
+        'technician': $('#id_filter_technician').val(),
         'date': $('#id_date').val(),
     }
     await fetch(`../scheduled_customers?date=${filters.date}&technician=${filters.technician}`)

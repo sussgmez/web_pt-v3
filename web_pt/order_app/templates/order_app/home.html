@@ -55,13 +55,14 @@
             </form>
         </div>
         <div id="id_customer_filters">
-            <input class="filter-input colspan-2" type="text"  placeholder="Buscar..." id="id_search_text" onkeyup="get_customer_list()">
+            <input class="filter-input colspan-2" type="text"  placeholder="Buscar..." id="id_filter_search_text" onkeyup="get_customer_list()">
             <div class="filter-input-w-label">
-                <label for="id_installation_status" class="label">Status</label>
-                <select class="filter-input" id="id_installation_status" onchange="get_customer_list()">
+                <label for="id_filter_installation_status" class="label">Status</label>
+                <select class="filter-input" id="id_filter_installation_status" onchange="get_customer_list()">
                     <option value="nd">---- ----</option>
                     {% if user.is_staff %}
                     <option value="or-to-assign">Por asignar</option>
+                    <option value="or-not-assign">No asignar</option>
                     {% endif %}
                     <option value="or-assigned">Asignada</option>
                     <option value="or-completed">Finalizada</option>
@@ -69,17 +70,17 @@
             </div>
             <div id="id_assigned_date" class="colspan-2">
                 <div class="filter-input-w-label">
-                    <label for="id_from_date" class="label">Desde</label>
-                    <input class="filter-input" onchange="get_customer_list()" type="date" id="id_from_date" disabled>
+                    <label for="id_filter_from_date" class="label">Desde</label>
+                    <input class="filter-input" onchange="get_customer_list()" type="date" id="id_filter_from_date" disabled>
                 </div>
                 <div class="filter-input-w-label">
-                    <label for="id_to_date" class="label">Hasta</label>
-                    <input class="filter-input" onchange="get_customer_list()" type="date" id="id_to_date" disabled>
+                    <label for="id_filter_to_date" class="label">Hasta</label>
+                    <input class="filter-input" onchange="get_customer_list()" type="date" id="id_filter_to_date" disabled>
                 </div>
             </div>
             <div class="filter-input-w-label">
-                <label for="id_technician" class="label">Técnico</label>
-                <select class="filter-input" id="id_technician" name="id_technician" onchange="get_customer_list()" disabled>
+                <label for="id_filter_technician" class="label">Técnico</label>
+                <select class="filter-input" id="id_filter_technician" name="id_technician" onchange="get_customer_list()" disabled>
                     
                     {% if user.is_staff %}
                     <option value="--">---- ----</option>
@@ -91,8 +92,8 @@
                 </select>
             </div>
             <div class="filter-input-w-label">
-                <label for="id_order_by_input" class="label">Ordenar</label>
-                <select class="filter-input" id="id_order_by_input" onchange="get_customer_list()"> 
+                <label for="id_filter_order_by_input" class="label">Ordenar</label>
+                <select class="filter-input" id="id_filter_order_by_input" onchange="get_customer_list()"> 
                     <option value="-date_created">Último añadido</option>
                     <option value="date_received">Fecha de recepción</option>
                     <option value="-pk" >Nro. De Contrato</option>

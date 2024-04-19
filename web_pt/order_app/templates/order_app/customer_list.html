@@ -57,9 +57,11 @@
         </div>
         
         {% if customer.order.completed %}
-        <p class="customer-status completed-status colspan-2">Completada</p>
+        <p class="customer-status completed-status colspan-2">Finalizada</p>
         {% elif customer.order.technician %}
         <p class="customer-status assigned-status colspan-2">Asignada</p>
+        {% elif customer.order.not_assign %}
+        <p class="customer-status not-assign-status colspan-2">No asignar</p>
         {% else %}
         <p class="customer-status to-assign-status colspan-2">Por asignar</p>
         {% endif %}
