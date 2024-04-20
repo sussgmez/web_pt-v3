@@ -1,6 +1,6 @@
 {% load order_app_extras %}
 
-<form class="installation-form" method="post" action="{% url 'update-order' order.pk %}" onsubmit="event.preventDefault();save_customer(this).finally(() => {get_customer_message(this)})">
+<form class="installation-form" method="post" action="{% url 'update-order' order.pk %}" onsubmit="event.preventDefault();save_customer(this).finally(() => {get_customer_message(this);get_form(`{% url 'update-order' form.instance.pk %}`, 'id_assign_installation_form')})">
     {% csrf_token %}
     <div class="form-header">
         <p>Instalación C{{form.instance.customer.pk}}</p>
@@ -110,18 +110,17 @@
             {% if perms.order_app.change_order %}
             <button class="btn">Editar</button>
                 {% if user.is_superuser %}
-                    {% if not form.instance.completed %}
-                    <button class="btn btn-success" onclick="$('#id_completed').attr('value','True');$('#id_assign_installation_form').hide()">Finalizar</button>
+                    
+                    {% if form.instance.completed %}
+                    <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False')">No finalizada</button>
+                    {% elif form.instance.not_assign %}
+                    <button class="btn btn-success" onclick="$('#id_not_assign').attr('value','False');">Permitir asignación</button>
                     {% else %}
-                    <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False');$('#id_assign_installation_form').hide()">Sin finalizar</button>
-                    {% endif %}  
-
-                    {% if not form.instance.not_assign %}
-                    <button class="btn btn-cancel" onclick="$('#id_not_assign').attr('value','True');$('#id_technician').val('0');$('#id_date_assigned').val('');$('#id_time_assigned').val('');$('#id_assign_installation_form').hide()">No asignar</button>
-                    {% else %}
-                    <button class="btn btn-success" onclick="$('#id_not_assign').attr('value','False');$('#id_assign_installation_form').hide()">Permitir asignación</button>
-                    {% endif %}   
-                        
+                    <button class="btn btn-success" onclick="$('#id_completed').attr('value','True')">Finalizar</button>
+                    <button class="btn btn-cancel" onclick="$('#id_not_assign').attr('value','True');$('#id_technician').val('0');$('#id_date_assigned').val('');$('#id_time_assigned').val('')">No asignar</button>
+                    {% endif %}
+                    
+                    <button class="btn btn-alt" onclick="event.preventDefault();get_schedule_message()">Mensaje solicitud</button>
                 {% endif %}
 
             {% endif %}

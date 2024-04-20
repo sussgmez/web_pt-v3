@@ -232,7 +232,7 @@ async function submit_preconfig_customer(form) {
 
 function check_contract_number(value) {
     if (parseInt(value) >= 1000000 && parseInt(value) <= 1099999) {
-        fetch(`./update_customer/${value}`)
+        fetch(`../update_customer/${value}`)
         .then(response => {
             if (!response.ok) { 
                 $("#id_btn_submit_add_customer").prop('disabled', false);
@@ -321,6 +321,17 @@ function get_customer_message(customer_form) {
 
     let customer_message = `*Validar potencia | ${category}*\n*Nro. De Contrato:* C${contract_number}\n*Nombre:* ${customer_name}\n*Dirección:* ${address}\n*Plan:* ${plan}\n*Z${zone}.OLT${olt}.T${card}.PON${pon}.C${box}.PUERTO${port}*\n*PC:* ${box_power}dBm\n*PR:* ${house_power}dBm\n*Serial ONU:* ${onu_serial}\n*DROP:* ${drop_serial}/${drop_used}m\n*Tensores:* ${hook_used}\n*Conectores:* ${fast_conn_used}`
     navigator.clipboard.writeText(customer_message)
+}
+
+function get_schedule_message() {
+
+    let customer_name = $('#id_customer_name').val();
+    let date_assigned = $('#id_date_assigned').val().split('-');
+    let time_assigned = $('#id_time_assigned').val().split(':');
+
+    let message = `Reciba un cordial saludo, ${customer_name}.\nLe escribimos de parte de la contratista Piccioli Telco con intenciones de consultar si existe la posibilidad de asistir el día ${date_assigned[2]}/${date_assigned[1]} a las ${time_assigned[0]}:${time_assigned[1]} para realizar la instalación del servicio de Internet de Datalink C.A en su residencia, quedamos atento a su respuesta!`
+
+    navigator.clipboard.writeText(message)
 }
 
 function add_alert_message(message_text) {
