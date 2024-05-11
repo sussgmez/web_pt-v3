@@ -1225,6 +1225,127 @@ input[type=number] {appearance: textfield;}
             padding-right: 5rem;
         }
     }
+    #id_device_filters {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        align-items: end;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        .filter-input {
+            cursor: pointer;
+            height: 2rem;
+            appearance: none;
+            padding: 0 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            background-color: $white;
+            transition: all 0.1s;
+            border: 1px solid $black-2;
+            border-radius: 2px;
+            &:focus {
+                outline: none;
+            }
+        }
+        .filter-input-w-label {
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            height: 2rem;
+            background-color: $white;
+            border: 1px solid $black-2;
+            transition: all 0.1s;
+            border-radius: 2px;
+            .label {
+                font-weight: 600;
+                font-size: 0.7rem;
+                padding: 0.67rem;
+                width: 5.25rem;
+            }
+            .filter-input {
+                width: 100%;
+                border: none;
+                background-color: transparent;
+                box-shadow: unset;
+                &:focus {
+                    outline: none;
+                }
+            }
+            &:has(.filter-input:disabled) {
+                border: 1px solid $black-1 !important;
+                box-shadow: unset;
+                background-color: $black-06;
+                .label {
+                    color: $black-6;
+                }
+                .filter-input {
+                    cursor: default;
+                }
+            }
+        }
+        .separator {
+            border-bottom: 1px solid $black-2;
+            width: 100%;
+        }
+        #id_assign_filters {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+        #id_assigned_date {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+        #id_btn_export_customers {
+            background-color: $success-color;
+            font-weight: 500;
+            padding: 0.5rem 2.5rem;
+            width: fit-content;
+            grid-column: -2;
+            margin-left: auto;
+            &:hover {
+                background-color: rgba($color: $success-color, $alpha: 0.6);
+            }
+        }
+        @media (max-width: $lg_screen) {
+            grid-template-columns: 1fr 1fr;
+            #id_search_text {
+                grid-column: auto;
+            }
+            #id_assign_filters {
+                grid-template-columns: 1fr 1fr;
+            }
+            .colspan-3 {
+                grid-column: span 2;
+            }
+        }
+        @media (max-width: $md_screen) {
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            .filter-input {
+                height: 2.35rem;
+            }
+            .filter-input-w-label {
+                height: 2.35rem;
+            }
+            #id_assigned_date {
+                grid-template-columns: 1fr;
+            }
+            #id_assign_filters {
+                grid-template-columns: 1fr;
+            }
+            #id_btn_export_customers {
+                width: 100%;
+                padding: 0.65rem;
+                font-weight: 600;
+            }
+            .colspan-2 {
+                grid-column: auto;
+            }
+            .colspan-3 {
+                grid-column: auto;
+            }
+        }
+    }
     #id_device_inventory {
         .inventory-header {
             .form-search-customer {
@@ -1530,7 +1651,7 @@ input[type=number] {appearance: textfield;}
         display: flex;
         justify-content: space-between;
         gap: 0.25rem;
-        grid-column: 1/-1;
+        grid-column: 1/-1;  
         .btn {
             padding: 0.55rem 1rem;
             flex: 1;

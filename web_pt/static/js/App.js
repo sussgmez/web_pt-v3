@@ -260,14 +260,66 @@ function check_contract_number(value) {
 async function export_xlsx() {
     var filename = ""
     filters = {
-        'text_search': $('#id_search_text').val(),
-        'status_search': $('#id_installation_status').val(),
-        'min_date': $('#id_from_date').val(),
-        'max_date': $('#id_to_date').val(),
-        'technician_search': $('#id_technician').val(),
+        'text_search': $('#id_filter_search_text').val(),
+        'status_search': $('#id_filter_installation_status').val(),
+        'min_date': $('#id_filter_from_date').val(),
+        'max_date': $('#id_filter_to_date').val(),
+        'technician_search': $('#id_filter_technician').val(),
     }
     await fetch(`../export_xlsx?&text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&technician_search=${filters.technician_search}&status_search=${filters.status_search}&order_by=${filters.order_by}`)
     .then(response => {
+        filename = response.headers.get('content-disposition').split('filename=')[1]
+        return response.blob()
+    })
+    .then(response => {
+        const aElement = document.createElement('a');
+        aElement.setAttribute('download', filename)
+        const href = URL.createObjectURL(response)
+        aElement.href = href;
+        aElement.setAttribute('target', '_blank');
+        aElement.click()
+        URL.revokeObjectURL(href);
+    })
+}
+
+async function onu_export_xlsx() {
+    var filename = ""
+    filters = {
+        'text_search': $('#id_filter_search_text').val(),
+        'status_search': $('#id_filter_device_status').val(),
+        'min_date': $('#id_filter_from_date').val(),
+        'max_date': $('#id_filter_to_date').val(),
+        'assigned_search': $('#id_filter_assigned').val(),
+    }
+    await fetch(`../onu_export_xlsx?&text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&assigned_search=${filters.assigned_search}&status_search=${filters.status_search}`)
+    .then(response => {
+        console.log(filename);
+        filename = response.headers.get('content-disposition').split('filename=')[1]
+        return response.blob()
+    })
+    .then(response => {
+        const aElement = document.createElement('a');
+        aElement.setAttribute('download', filename)
+        const href = URL.createObjectURL(response)
+        aElement.href = href;
+        aElement.setAttribute('target', '_blank');
+        aElement.click()
+        URL.revokeObjectURL(href);
+    })
+}
+
+async function router_export_xlsx() {
+    var filename = ""
+    filters = {
+        'text_search': $('#id_filter_search_text').val(),
+        'status_search': $('#id_filter_device_status').val(),
+        'min_date': $('#id_filter_from_date').val(),
+        'max_date': $('#id_filter_to_date').val(),
+        'assigned_search': $('#id_filter_assigned').val(),
+    }
+    await fetch(`../router_export_xlsx?&text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&assigned_search=${filters.assigned_search}&status_search=${filters.status_search}`)
+    .then(response => {
+        console.log(filename);
         filename = response.headers.get('content-disposition').split('filename=')[1]
         return response.blob()
     })
@@ -354,9 +406,13 @@ function add_error_message(message_text) {
 
 async function get_onu_list() {
     filters = {
-        'text_search': $('#id_text_search').val(),
+        'text_search': $('#id_filter_search_text').val(),
+        'status_search': $('#id_filter_device_status').val(),
+        'min_date': $('#id_filter_from_date').val(),
+        'max_date': $('#id_filter_to_date').val(),
+        'assigned_search': $('#id_filter_assigned').val(),
     }
-    await fetch(`../onu_list?text_search=${filters.text_search}`)
+    await fetch(`../onu_list?text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&assigned_search=${filters.assigned_search}&status_search=${filters.status_search}`)
     .then(response => {
         return response.text()
     })
@@ -367,9 +423,13 @@ async function get_onu_list() {
 
 async function get_router_list() {
     filters = {
-        'text_search': $('#id_text_search').val(),
+        'text_search': $('#id_filter_search_text').val(),
+        'status_search': $('#id_filter_device_status').val(),
+        'min_date': $('#id_filter_from_date').val(),
+        'max_date': $('#id_filter_to_date').val(),
+        'assigned_search': $('#id_filter_assigned').val(),
     }
-    await fetch(`../router_list?text_search=${filters.text_search}`)
+    await fetch(`../router_list?text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&assigned_search=${filters.assigned_search}&status_search=${filters.status_search}`)
     .then(response => {
         return response.text()
     })
@@ -434,20 +494,20 @@ window.onload = () => {
                 e.stopPropagation()
             }
         });
-        $('#id_installation_status').change(function (e) { 
+        $('#id_filter_installation_status').change(function (e) { 
             e.preventDefault();
-            if (this.value == 'or-assigned' || this.value == 'or-completed') {
-                $("#id_from_date").prop('disabled', false);
-                $("#id_to_date").prop('disabled', false);
-                $("#id_technician").prop('disabled', false);
+            if (this.value == 'or-assigned' || this.value == 'or-completed' || this.value == 'or-checked' || this.value == 'or-not-checked') {
+                $("#id_filter_from_date").prop('disabled', false);
+                $("#id_filter_to_date").prop('disabled', false);
+                $("#id_filter_technician").prop('disabled', false);
                 
             } else {
-                $("#id_from_date").val("");
-                $("#id_to_date").val("");
+                $("#id_filter_from_date").val("");
+                $("#id_filter_to_date").val("");
                 
-                $("#id_from_date").prop('disabled', true);
-                $("#id_to_date").prop('disabled', true);
-                $("#id_technician").prop('disabled', true);
+                $("#id_filter_from_date").prop('disabled', true);
+                $("#id_filter_to_date").prop('disabled', true);
+                $("#id_filter_technician").prop('disabled', true);
             }
         });
         get_customer_list()
@@ -468,7 +528,6 @@ window.onload = () => {
         get_add_router_form()
     }
     
-
     $('#id_alert_messages').children().each(function () { 
         setTimeout(() => {$(this).fadeOut()}, 4000)
     })

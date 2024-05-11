@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include
 from django.views.generic import RedirectView
-from order_app.views import HomeView, CustomerCreateView, CustomerListView, CustomerUpdateView, OrderUpdateView, CustomerDeleteView, Schedule, ScheduledCustomers, CustomersToAssign, OrderAssignUpdate, OrderHSUpdateView, Preconfig, PreconfigCustomers, OrderPreconfigUpdateView, InventoryOnuPage, OnuCreateView, OnuUpdateView, OnuDeleteView,  OnuListView, InventoryRouterPage, RouterCreateView, RouterUpdateView, RouterDeleteView, RouterListView,  import_xlsx, export_xlsx
+from order_app.views import HomeView, CustomerCreateView, CustomerListView, CustomerUpdateView, OrderUpdateView, CustomerDeleteView, Schedule, ScheduledCustomers, CustomersToAssign, OrderAssignUpdate, OrderHSUpdateView, Preconfig, PreconfigCustomers, OrderPreconfigUpdateView, InventoryOnuPage, OnuCreateView, OnuUpdateView, OnuDeleteView,  OnuListView, InventoryRouterPage, RouterCreateView, RouterUpdateView, RouterDeleteView, RouterListView,  import_xlsx, export_xlsx, onu_export_xlsx, router_export_xlsx
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,11 +33,12 @@ urlpatterns = [
     path('inventory/update_onu/<slug:pk>', login_required(OnuUpdateView.as_view()), name='update-onu'),
     path('inventory/delete_onu/<slug:pk>', login_required(OnuDeleteView.as_view()), name='delete-onu'),
     path('inventory/onu_list/', login_required(OnuListView.as_view()), name='onu-list'),
+    path('inventory/onu_export_xlsx/', login_required(onu_export_xlsx), name='onu-export-xlsx'),
     # Inventory Router
     path('inventory/router/', login_required(InventoryRouterPage.as_view()), name='inventory-router'),
     path('inventory/add_router/', login_required(RouterCreateView.as_view()), name='add-router'),
     path('inventory/update_router/<slug:pk>', login_required(RouterUpdateView.as_view()), name='update-router'),
     path('inventory/delete_router/<slug:pk>', login_required(RouterDeleteView.as_view()), name='delete-router'),
     path('inventory/router_list/', login_required(RouterListView.as_view()), name='router-list'),
-    
+    path('inventory/router_export_xlsx/', login_required(router_export_xlsx), name='router-export-xlsx'),
 ]

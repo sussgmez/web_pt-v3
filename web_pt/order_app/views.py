@@ -58,10 +58,13 @@ class CustomerListView(ListView):
         text_search = self.request.GET['text_search']
         customers = Customer.objects.filter(contract_number__contains=text_search) | Customer.objects.filter(customer_name__contains=text_search) | Customer.objects.filter(address__contains=text_search)
         status_search = self.request.GET['status_search']
-        if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False)
-        elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False)
+        if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False).filter(order__not_assign=False)
+        elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False).filter(order__not_assign=False)
         elif (status_search == 'or-completed'): customers = customers.filter(order__completed=True)
         elif (status_search == 'or-not-assign'): customers = customers.filter(order__not_assign=True).filter(order__completed=False)
+
+        elif (status_search == 'or-checked'): customers = customers.filter(order__checked=True)
+        elif (status_search == 'or-not-checked'): customers = customers.exclude(order__technician=None).filter(order__checked=False)
         
         technician_search = self.request.GET['technician_search']
         if technician_search != "--": customers = customers.filter(order__technician=technician_search)
@@ -187,6 +190,11 @@ class OrderPreconfigUpdateView(UpdateView):
 class InventoryOnuPage(TemplateView):
     template_name = "order_app/inventory_onu.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["technicians"] = Technician.objects.all()
+        return context
+    
 class OnuCreateView(CreateView):
     model = Onu
     form_class = OnuForm
@@ -219,15 +227,43 @@ class OnuDeleteView(DeleteView):
 class OnuListView(ListView):
     model = Onu
     template_name = "order_app/onu_list.html"
+    paginate_by = 50
 
     def get_queryset(self):
         text_search = self.request.GET['text_search']
-        onus = Onu.objects.filter(serial__contains=text_search) | Onu.objects.filter(order__customer__pk__contains=text_search) | Onu.objects.filter(technician__user__first_name__contains=text_search)
+        status_search = self.request.GET['status_search']
+        assigned_search = self.request.GET['assigned_search']
+        
+        min_date = self.request.GET['min_date']
+        if min_date == "": min_date = '1900-01-01'
+
+        max_date = self.request.GET['max_date']
+        if max_date == "": max_date = '2100-01-01'
+
+        onus = Onu.objects.filter(serial__contains=text_search) | Onu.objects.filter(order__customer__pk__contains=text_search)
+    
+        if assigned_search == "of":
+            onus = onus.filter(technician=None)
+        elif assigned_search != "sd":
+            onus = onus.filter(technician=assigned_search)
+
+        if status_search == "1":
+            onus = onus.filter(order__completed=False) | onus.filter(order=None)
+        elif status_search == "2":
+            onus = onus.filter(order__completed=True)
+
+        if min_date != "1900-01-01" or max_date != "2100-01-01": onus = onus.filter(date_updated__range=[min_date, max_date])
+
         return onus.order_by('-date_updated')
 
 # Inventory Router
 class InventoryRouterPage(TemplateView):
     template_name = "order_app/inventory_router.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["technicians"] = Technician.objects.all()
+        return context
 
 class RouterCreateView(CreateView):
     model = Router
@@ -261,10 +297,33 @@ class RouterDeleteView(DeleteView):
 class RouterListView(ListView):
     model = Router
     template_name = "order_app/router_list.html"
+    paginate_by = 50
 
     def get_queryset(self):
         text_search = self.request.GET['text_search']
-        routers = Router.objects.filter(serial__contains=text_search) | Router.objects.filter(order__customer__pk__contains=text_search) | Router.objects.filter(technician__user__first_name__contains=text_search)
+        status_search = self.request.GET['status_search']
+        assigned_search = self.request.GET['assigned_search']
+        
+        min_date = self.request.GET['min_date']
+        if min_date == "": min_date = '1900-01-01'
+
+        max_date = self.request.GET['max_date']
+        if max_date == "": max_date = '2100-01-01'
+
+        routers = Router.objects.filter(serial__contains=text_search) | Router.objects.filter(order__customer__pk__contains=text_search)
+    
+        if assigned_search == "of":
+            routers = routers.filter(technician=None)
+        elif assigned_search != "sd":
+            routers = routers.filter(technician=assigned_search)
+
+        if status_search == "1":
+            routers = routers.filter(order__completed=False) | routers.filter(order=None)
+        elif status_search == "2":
+            routers = routers.filter(order__completed=True)
+
+        if min_date != "1900-01-01" or max_date != "2100-01-01": routers = routers.filter(date_updated__range=[min_date, max_date])
+
         return routers.order_by('-date_updated')
 
 # Others
@@ -297,7 +356,7 @@ def import_xlsx(request):
 
             if created:
                 try:
-                    printable = set(string.printable+'ñÑ')
+                    printable = set(string.printable+'ñÑáÁéÉíÍóÓúÚ')
                     obj.customer_name = ''.join(filter(lambda x: x in printable, values['customer_name'])).title()
                     obj.address = ''.join(filter(lambda x: x in printable, values['address'])).title().title().replace('Calle Calle', 'Calle').replace('Urb. Urb.', 'Urb.').replace('Ii', 'II')
 
@@ -364,10 +423,16 @@ def export_xlsx(request):
     customers = Customer.objects.filter(contract_number__contains=text_search) | Customer.objects.filter(customer_name__contains=text_search) | Customer.objects.filter(address__contains=text_search)
     
     status_search = request.GET['status_search']
-    if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False)
+    if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False).filter(order__not_assign=False)
     elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False)
     elif (status_search == 'or-completed'): customers = customers.filter(order__completed=True)
-    
+    elif (status_search == 'or-not-assign'): customers = customers.filter(order__not_assign=True).filter(order__completed=False)
+    elif (status_search == 'or-checked'): customers = customers.filter(order__checked=True)
+    elif (status_search == 'or-not-checked'): customers = customers.exclude(order__technician=None).filter(order__checked=False)
+        
+    technician_search = request.GET['technician_search']
+    if technician_search != "--": customers = customers.filter(order__technician=technician_search)
+
     min_date = request.GET['min_date']
     if min_date == "": min_date = '1900-01-01'
 
@@ -383,6 +448,7 @@ def export_xlsx(request):
         df_aux = pandas.DataFrame([[
             customer.order.date_assigned.strftime('%A') if customer.order.date_assigned != None else "",
             1,
+            customer.date_received.strftime('%d/%m/%Y') if customer.date_received != None else "",
             customer.order.date_assigned.strftime('%d/%m/%Y') if customer.order.date_assigned != None else "",
             customer.contract_number, 
             customer.customer_name, 
@@ -397,7 +463,7 @@ def export_xlsx(request):
         ]])  
         df = pandas.concat([df, df_aux])
 
-    df = df.rename(columns={0:'DIA', 1:'ITEM', 2:'FECHA', 3:'CONTRATO', 4:'NOMBRE CLIENTE', 5:'DIRECCION', 6:'+ DE 250M', 7:'TENSORES', 8:'MTS DROP', 9:'SN. DROP', 10:'SERIAL ONU', 11:'SERIAL ROUTER', 12:'TÉCNICO'})
+    df = df.rename(columns={0:'DIA', 1:'ITEM', 2:'FECHA RECIBIDA', 3:'FECHA ASIGNADA', 4:'CONTRATO', 5:'NOMBRE CLIENTE', 6:'DIRECCION', 7:'+ DE 250M', 8:'TENSORES', 9:'MTS DROP', 10:'SN. DROP', 11:'SERIAL ONU', 12:'SERIAL ROUTER', 13:'TÉCNICO'})
 
     with BytesIO() as b:
         with pandas.ExcelWriter(b) as writer:
@@ -410,103 +476,116 @@ def export_xlsx(request):
         res['Content-Disposition'] = f'attachment; filename={filename}'
         return res
 
+
+def onu_export_xlsx(request): 
+    text_search = request.GET['text_search']
+    status_search = request.GET['status_search']
+    assigned_search = request.GET['assigned_search']
     
-"""
-def import_xlsx(request):
-    if request.POST:
-        df = pandas.read_excel(request.FILES['excel_file'])
-        df.columns = [
-            'contract_number', 
-            'customer_name', 
-            'email', 
-            'phone_1', 
-            'phone_2', 
-            'address',
-            'customer_type', 
-            'category', 
-            'plan', 
-            'assigned_company', 
-            'seller',
-            'comment', 
-            'date_received', 
-            'date_created', 
-            'date_updated',
-            'technician', 
-            'date_assigned', 
-            'time_assigned',
-            'completed',
-            'zone', 
-            'olt',
-            'card', 
-            'pon', 
-            'box',
-            'port',
-            'box_power',
-            'house_power',
-            'onu_serial', 
-            'router_serial',
-            'drop_serial',
-            'drop_used',
-            'hook_used',
-            'fast_conn_used'
-        ]
-        df = df.fillna('')
+    min_date = request.GET['min_date']
+    if min_date == "": min_date = '1900-01-01'
 
-        for id, values in df.iterrows():
-            try: obj, created = Customer.objects.get_or_create(contract_number=values['contract_number'])
-            except: continue
-            if created:
-                try:
-                    printable = set(string.printable+'ñÑ')
+    max_date = request.GET['max_date']
+    if max_date == "": max_date = '2100-01-01'
 
-                    obj.customer_name = ''.join(filter(lambda x: x in printable, values['customer_name'])).title()
-                    obj.email = values['email']
-                    
-                    aux_phone_1 = str(math.trunc(float(values['phone_1'])))
-                    obj.phone_2 = ""
-                    if values['phone_2'] != "": 
-                        aux_phone_2 = str(math.trunc(float(values['phone_2'])))
-                        obj.phone_2 = "0" + aux_phone_2 if aux_phone_2[0] == "4" else aux_phone_2
-                    obj.phone_1 = "0" + aux_phone_1 if aux_phone_1[0] == "4" else aux_phone_1
+    onus = Onu.objects.filter(serial__contains=text_search) | Onu.objects.filter(order__customer__pk__contains=text_search)
 
-                    obj.address = ''.join(filter(lambda x: x in printable, values['address'])).title().title().replace('Calle Calle', 'Calle').replace('Urb. Urb.', 'Urb.').replace('Ii', 'II')
-                    
-                    obj.customer_type = values['customer_type']
-                    obj.category = values['category']
-                    obj.plan = values['plan']
-                    obj.assigned_company = values['assigned_company']
-                    obj.seller = values['seller']
-                    obj.comment = values['comment'].title()
+    if assigned_search == "of":
+        onus = onus.filter(technician=None)
+    elif assigned_search != "sd":
+        onus = onus.filter(technician=assigned_search)
 
-                    obj.date_received = datetime.strptime(values['date_received'], '%d/%m/%Y') if values['date_received'] != "" else None
-                    obj.date_created = datetime.strptime(values['date_created'], '%d/%m/%Y') if values['date_created'] != "" else None
-                    obj.date_updated = datetime.strptime(values['date_updated'], '%d/%m/%Y') if values['date_updated'] != "" else None
+    if status_search == "1":
+        onus = onus.filter(order__completed=False) | onus.filter(order=None)
+    elif status_search == "2":
+        onus = onus.filter(order__completed=True)
 
-                    order = Order.objects.create(customer=obj)
-                    order.technician = Technician.objects.get(code=values['technician']) if values['technician'] != "" else None
-                    order.date_assigned = datetime.strptime(values['date_assigned'], '%d/%m/%Y') if values['date_assigned'] != "" else None
-                    order.time_assigned = datetime.strptime(values['time_assigned'], '%H:%M:00') if values['time_assigned'] != "" else None
-                    
-                    order.completed = values['completed']
-                    
-                    order.zone = values['zone'] if values['zone'] != "" else None 
-                    order.olt = values['olt'] if values['olt'] != "" else None 
-                    order.card = values['card'] if values['card'] != "" else None 
-                    order.pon = values['pon'] if values['pon'] != "" else None 
-                    order.box = values['box'] if values['box'] != "" else None 
-                    order.port = values['port'] if values['port'] != "" else None 
+    if min_date != "1900-01-01" or max_date != "2100-01-01": onus = onus.filter(date_updated__range=[min_date, max_date])
 
-                    order.box_power = values['box_power'] if values['box_power'] != "" else None
-                    order.house_power = values['house_power'] if values['house_power'] != "" else None
-                    order.onu_serial = values['onu_serial']
-                    order.router_serial = values['router_serial']
-                    order.drop_serial = values['drop_serial'] if values['drop_serial'] != "" else None
-                    order.drop_used = values['drop_used'] if values['drop_used'] != "" else None
-                    order.hook_used = values['hook_used'] if values['hook_used'] != "" else None
-                    order.fast_conn_used = values['fast_conn_used'] if values['fast_conn_used'] != "" else None
+    df = pandas.DataFrame()
 
-                    obj.save()
-                    order.save()
-                except Exception as e:
-                    obj.delete()
-"""
+    for onu in onus:
+        contract_number = None
+        
+        try: contract_number = onu.order.customer.contract_number
+        except: pass
+        
+        df_aux = pandas.DataFrame([[
+            onu.serial,
+            contract_number,
+            onu.technician if onu.technician != None else "",
+            onu.date_updated.strftime("%d/%m/%Y, %H:%M")
+        ]])
+        df = pandas.concat([df, df_aux])
+
+
+    df = df.rename(columns={0:'SERIAL', 1:'NRO. DE CONTRATO', 2:'TÉCNICO', 3:'ÚLTIMA MODIFICACIÓN'})
+
+    with BytesIO() as b:
+        with pandas.ExcelWriter(b) as writer:
+            df.to_excel(writer, sheet_name='DATA 1', index=False)
+        filename = f'{str(datetime.now().strftime("ONU-LIST %d-%m-%Y %H%M%S"))}.xlsx'
+        print(filename)
+        res = HttpResponse(
+            b.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        res['Content-Disposition'] = f'attachment; filename={filename}'
+        return res
+
+
+def router_export_xlsx(request): 
+    text_search = request.GET['text_search']
+    status_search = request.GET['status_search']
+    assigned_search = request.GET['assigned_search']
+    
+    min_date = request.GET['min_date']
+    if min_date == "": min_date = '1900-01-01'
+
+    max_date = request.GET['max_date']
+    if max_date == "": max_date = '2100-01-01'
+
+    routers = Router.objects.filter(serial__contains=text_search) | Router.objects.filter(order__customer__pk__contains=text_search)
+
+    if assigned_search == "of":
+        routers = routers.filter(technician=None)
+    elif assigned_search != "sd":
+        routers = routers.filter(technician=assigned_search)
+
+    if status_search == "1":
+        routers = routers.filter(order__completed=False) | routers.filter(order=None)
+    elif status_search == "2":
+        routers = routers.filter(order__completed=True)
+
+    if min_date != "1900-01-01" or max_date != "2100-01-01": routers = routers.filter(date_updated__range=[min_date, max_date])
+
+    df = pandas.DataFrame()
+
+    for router in routers:
+        contract_number = None
+        
+        try: contract_number = router.order.customer.contract_number
+        except: pass
+        
+        df_aux = pandas.DataFrame([[
+            router.serial,
+            contract_number,
+            router.technician if router.technician != None else "",
+            router.date_updated.strftime("%d/%m/%Y, %H:%M")
+        ]])
+        df = pandas.concat([df, df_aux])
+
+
+    df = df.rename(columns={0:'SERIAL', 1:'NRO. DE CONTRATO', 2:'TÉCNICO', 3:'ÚLTIMA MODIFICACIÓN'})
+
+    with BytesIO() as b:
+        with pandas.ExcelWriter(b) as writer:
+            df.to_excel(writer, sheet_name='DATA 1', index=False)
+        filename = f'{str(datetime.now().strftime("ROUTER-LIST %d-%m-%Y %H%M%S"))}.xlsx'
+        print(filename)
+        res = HttpResponse(
+            b.getvalue(),
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+        res['Content-Disposition'] = f'attachment; filename={filename}'
+        return res

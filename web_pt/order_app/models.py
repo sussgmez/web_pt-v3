@@ -116,6 +116,7 @@ class Order(models.Model):
     router = models.OneToOneField(Router, verbose_name=_("Router"), on_delete=models.SET_NULL, blank=True, null=True)
 
     completed = models.BooleanField(_("Completada"), default=False)
+    checked = models.BooleanField(_("Catastrado"), default=False)
     
     not_assign = models.BooleanField(_("No asignar"), default=False)
     
@@ -155,12 +156,3 @@ def order_post_save_receiver(sender, instance, **kwargs):
     if instance.technician != None and instance.date_assigned == None:
         instance.date_assigned = datetime.datetime.now()
         instance.save()
-
-
-
-# @receiver(pre_save, sender=Order)
-# def order_pre_save_receiver(sender, instance, **kwargs):
-#     orders = Order.objects.filter(onu_serial=instance.onu_serial).exclude(pk=instance.pk).exclude(onu_serial=None)
-#     for order in orders:
-#         order.onu_serial = None
-#         order.save()

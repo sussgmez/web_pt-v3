@@ -22,7 +22,7 @@
         <div class="form-field colspan-2">
             {{ form.technician }}
             {% if not user.is_staff or form.instance.not_assign %}
-                <input type="hidden" name="technician" value="{{ form.instance.technician.value }}">
+                <input type="hidden" name="technician" value="{{ form.instance.technician.pk }}">
             {% endif %}
             <span class="floating-label">Técnico</span>
         </div>
@@ -104,6 +104,7 @@
         </div>
 
         {{ form.completed }}
+        {{ form.checked }}
         {{ form.not_assign }}
 
         <div class="form-btns">
@@ -112,12 +113,22 @@
                 {% if user.is_superuser %}
                     
                     {% if form.instance.completed %}
-                    <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False')">No finalizada</button>
+                    <button class="btn btn-cancel" onclick="$('#id_completed').attr('value','False')">No finalizada</button> 
                     {% elif form.instance.not_assign %}
                     <button class="btn btn-success" onclick="$('#id_not_assign').attr('value','False');">Permitir asignación</button>
                     {% else %}
                     <button class="btn btn-success" onclick="$('#id_completed').attr('value','True')">Finalizar</button>
-                    <button class="btn btn-cancel" onclick="$('#id_not_assign').attr('value','True');$('#id_technician').val('0');$('#id_date_assigned').val('');$('#id_time_assigned').val('')">No asignar</button>
+                    <button class="btn btn-cancel" onclick="$('#id_not_assign').attr('value','True')">Demorada</button>
+                    {% endif %}
+
+                    {% if not form.instance.not_assign %}
+
+                    {% if not form.instance.checked %}
+                        <button class="btn btn-success" onclick="$('#id_checked').attr('value','True')">Validar</button>
+                    {% else %}
+                        <button class="btn btn-cancel" onclick="$('#id_checked').attr('value','False')">Sin validar</button>
+                    {% endif %}
+                    
                     {% endif %}
                     
                     <button class="btn btn-alt" onclick="event.preventDefault();get_schedule_message()">Mensaje solicitud</button>
