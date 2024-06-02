@@ -101,6 +101,21 @@
                     <option value="-pk" >Nro. De Contrato</option>
                 </select>
             </div>
+            <div class="filter-input-w-label" id="id_container_not_assign_reason" style="display: none;">
+                <label for="id_filter_not_assign_reason_input" class="label">M.Demora</label>
+                <select class="filter-input" id="id_filter_not_assign_reason_input" onchange="get_customer_list()"> 
+                    <option value="-1">--- ---</option>
+                    <option value="0">Cliente no responde</option>
+                    <option value="1">Cliente no disponible</option>
+                    <option value="2">Cliente retira el servicio</option>
+                    <option value="3">En espera de adecuación</option>
+                    <option value="4">Caja NAP llena</option>
+                    <option value="5">Inspección</option>
+                    <option value="6">Asignación retirada</option>
+                    <option value="7">Otro</option>
+                </select>
+            </div>
+            
             <button id="id_btn_export_customers" class="btn" onclick="export_xlsx();">Exportar</button>
             <div id="id_get_xlsx" style="display: none;"></div>
         </div>

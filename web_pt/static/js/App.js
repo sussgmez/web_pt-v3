@@ -168,8 +168,13 @@ async function get_customer_list(num_page = 1) {
         'max_date': $('#id_filter_to_date').val(),
         'technician_search': $('#id_filter_technician').val(),
         'order_by': $('#id_filter_order_by_input').val(),
+        'not_assign_reason': "-1"
     }
-    await fetch(`../customer_list?page=${num_page}&text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&technician_search=${filters.technician_search}&status_search=${filters.status_search}&order_by=${filters.order_by}`)
+    if (filters['status_search'] == 'or-not-assign') {
+        filters['not_assign_reason'] = $('#id_filter_not_assign_reason_input').val()
+    }
+
+    await fetch(`../customer_list?page=${num_page}&text_search=${filters.text_search}&min_date=${filters.min_date}&max_date=${filters.max_date}&technician_search=${filters.technician_search}&status_search=${filters.status_search}&order_by=${filters.order_by}&not_assign_reason=${filters.not_assign_reason}`)
     .then(response => {
         if (!response.ok) {
             get_customer_list()
@@ -359,11 +364,13 @@ function get_customer_message(customer_form) {
     let pon = customer_form.querySelector('#id_pon').value;
     let box = customer_form.querySelector('#id_box').value;
     let port = customer_form.querySelector('#id_port').value;
-    
+
     let box_power = customer_form.querySelector('#id_box_power').value;
     let house_power = customer_form.querySelector('#id_house_power').value;
 
     let onu_serial = customer_form.querySelector('#id_onu').value;
+    let router_serial = customer_form.querySelector('#id_router').value;
+    
 
     let drop_serial = customer_form.querySelector('#id_drop_serial').value;
     let drop_used = customer_form.querySelector('#id_drop_used').value;
@@ -371,7 +378,10 @@ function get_customer_message(customer_form) {
     let hook_used = customer_form.querySelector('#id_hook_used').value;
     let fast_conn_used = customer_form.querySelector('#id_fast_conn_used').value;
 
-    let customer_message = `*Validar potencia | ${category}*\n*Nro. De Contrato:* C${contract_number}\n*Nombre:* ${customer_name}\n*Dirección:* ${address}\n*Plan:* ${plan}\n*Z${zone}.OLT${olt}.T${card}.PON${pon}.C${box}.PUERTO${port}*\n*PC:* ${box_power}dBm\n*PR:* ${house_power}dBm\n*Serial ONU:* ${onu_serial}\n*DROP:* ${drop_serial}/${drop_used}m\n*Tensores:* ${hook_used}\n*Conectores:* ${fast_conn_used}`
+    let available_ports = customer_form.querySelector('#id_available_ports').value;
+    
+
+    let customer_message = `*Validar potencia | ${category}*\n*Nro. De Contrato:* C${contract_number}\n*Nombre:* ${customer_name}\n*Dirección:* ${address}\n*Plan:* ${plan}\n*Z${zone}.OLT${olt}.T${card}.PON${pon}.C${box}.PUERTO${port}*\n*P. Disponibles:* ${available_ports}\n*PC:* ${box_power}dBm\n*PR:* ${house_power}dBm\n*Serial ONU:* ${onu_serial}\n*Serial Router:* ${router_serial}\n*DROP:* ${drop_serial}/${drop_used}m\n*Tensores:* ${hook_used}\n*Conectores:* ${fast_conn_used}`
     navigator.clipboard.writeText(customer_message)
 }
 
@@ -508,6 +518,12 @@ window.onload = () => {
                 $("#id_filter_from_date").prop('disabled', true);
                 $("#id_filter_to_date").prop('disabled', true);
                 $("#id_filter_technician").prop('disabled', true);
+            }
+            if (this.value == 'or-not-assign') {
+                $("#id_container_not_assign_reason").show();
+            } else {
+                $("#id_container_not_assign_reason").hide();
+                $("#id_filter_not_assign_reason_input").val("-1");
             }
         });
         get_customer_list()

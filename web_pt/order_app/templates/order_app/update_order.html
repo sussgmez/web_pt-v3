@@ -102,10 +102,21 @@
             {{ form.fast_conn_used }}
             <span class="floating-label">Conectores</span>
         </div>
+        <div class="form-field">
+            <input type="number" name="available_ports" class="form-input" placeholder=" " id="id_available_ports">
+            <span class="floating-label">P. disponibles</span>
+        </div>
 
         {{ form.completed }}
         {{ form.checked }}
         {{ form.not_assign }}
+
+        {% if order.not_assign %}
+            <div class="form-field">
+                {{ form.not_assign_reason }}
+                <span class="floating-label">Motivo</span>
+            </div>
+        {% endif %}
 
         <div class="form-btns">
             {% if perms.order_app.change_order %}

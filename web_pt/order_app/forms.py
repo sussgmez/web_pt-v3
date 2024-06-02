@@ -32,7 +32,7 @@ class CustomerForm(forms.ModelForm):
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed', 'checked', 'not_assign']
+        fields = ['technician', 'date_assigned', 'time_assigned', 'onu', 'router', 'zone', 'olt', 'card', 'pon', 'box', 'port', 'box_power', 'house_power', 'drop_serial', 'drop_used', 'hook_used', 'fast_conn_used', 'completed', 'checked', 'not_assign', 'not_assign_reason']
         widgets = {
             'technician':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
             'date_assigned':forms.DateInput(format='%Y-%m-%d', attrs={'type':'date','class':'form-input only-superuser', 'placeholder':' '}),
@@ -54,9 +54,13 @@ class OrderForm(forms.ModelForm):
             'hook_used':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
             'fast_conn_used':forms.NumberInput(attrs={'class':'form-input', 'placeholder':' '}),
 
+
             'completed': forms.HiddenInput(),
             'checked': forms.HiddenInput(),
             'not_assign': forms.HiddenInput(),
+
+            'not_assign_reason':forms.Select(attrs={'class':'form-input', 'placeholder':' '}),
+
         }
 
     def __init__(self, *args, **kwargs):

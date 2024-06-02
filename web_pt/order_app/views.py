@@ -61,7 +61,11 @@ class CustomerListView(ListView):
         if (status_search == 'or-to-assign'): customers = customers.filter(order__technician=None).filter(order__completed=False).filter(order__not_assign=False)
         elif (status_search == 'or-assigned'): customers = customers.exclude(order__technician=None).filter(order__completed=False).filter(order__not_assign=False)
         elif (status_search == 'or-completed'): customers = customers.filter(order__completed=True)
-        elif (status_search == 'or-not-assign'): customers = customers.filter(order__not_assign=True).filter(order__completed=False)
+        elif (status_search == 'or-not-assign'): 
+            customers = customers.filter(order__not_assign=True).filter(order__completed=False)
+            not_assing_reason = self.request.GET['not_assign_reason']
+            if not_assing_reason != '-1':
+                customers = customers.filter(order__not_assign_reason=int(not_assing_reason))
 
         elif (status_search == 'or-checked'): customers = customers.filter(order__checked=True)
         elif (status_search == 'or-not-checked'): customers = customers.exclude(order__technician=None).filter(order__checked=False)
@@ -76,6 +80,8 @@ class CustomerListView(ListView):
         if max_date == "": max_date = '2100-01-01'
 
         if min_date != "1900-01-01" or max_date != "2100-01-01": customers = customers.filter(order__date_assigned__range=[min_date, max_date])
+
+
 
         order_by = self.request.GET['order_by']
 

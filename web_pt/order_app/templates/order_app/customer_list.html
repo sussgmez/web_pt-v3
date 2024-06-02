@@ -34,10 +34,17 @@
             <p class="customer-label">Fecha recibida</p>
             <p class="customer-field">{{ customer.date_received|date:"d/m/Y"|is_none }}</p>
         </div>
+        {% if customer.order.not_assign %}
         <div class="colspan-2">
-            <p class="customer-label">Observaciones</p>
-            <p class="customer-field customer-comment">{{ customer.comment|is_none }}</p>
+            <p class="customer-label">Motivo demora</p>
+            <p class="customer-field customer-comment">{{ customer.order.get_not_assign_reason_display|is_none }}</p>
         </div>
+        {% else %}
+            <div class="colspan-2">
+                <p class="customer-label">Observaciones</p>
+                <p class="customer-field customer-comment">{{ customer.comment|is_none }}</p>
+            </div>
+        {% endif %}
     </div>
     <hr class="separator">
     <div class="assign-info">

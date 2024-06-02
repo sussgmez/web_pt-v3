@@ -102,11 +102,24 @@ class Router(models.Model):
 
 
 class Order(models.Model):
+    
     CUSTOMER_CONFIRMATION_OPTIONS = [
         (0, 'No citado'),
         (1, 'Pendiente'),
         (2, 'Confirmado'),
     ]
+
+    NOT_ASSIGN_REASONS = [
+        (0, 'Cliente no responde'),
+        (1, 'Cliente no disponible'),
+        (2, 'Cliente retira el servicio'),
+        (3, 'En espera de adecuación'),
+        (4, 'Caja NAP llena'),
+        (5, 'Inspección'),
+        (6, 'Asignación retirada'),
+        (7, 'Otro'),
+    ]
+
     customer = models.OneToOneField(Customer, verbose_name=_("Cliente"), on_delete=models.CASCADE)
     technician = models.ForeignKey(Technician, verbose_name=_("Técnico"), on_delete=models.CASCADE, blank=True, null=True, related_name="orders", related_query_name='order')
     date_assigned = models.DateField(_("Fecha a realizar"), blank=True, null=True)
@@ -117,7 +130,6 @@ class Order(models.Model):
 
     completed = models.BooleanField(_("Completada"), default=False)
     checked = models.BooleanField(_("Catastrado"), default=False)
-    
     not_assign = models.BooleanField(_("No asignar"), default=False)
     
     zone = models.IntegerField(_("Zona"), blank=True, null=True)
@@ -135,6 +147,9 @@ class Order(models.Model):
     fast_conn_used = models.IntegerField(_("Conectores"), default=2, blank=True, null=True)
 
     customer_confirmation = models.IntegerField(_("Confirmación Cliente"), choices=CUSTOMER_CONFIRMATION_OPTIONS, default=0)
+
+    not_assign_reason = models.IntegerField(_("Motivo de demora"), choices=NOT_ASSIGN_REASONS, blank=True, null=True)
+
     date_created = models.DateTimeField(_("Fecha De Creación"), auto_now=False, auto_now_add=True)
     date_updated = models.DateTimeField(_("Última Modificación"), auto_now=True, auto_now_add=False)
 
